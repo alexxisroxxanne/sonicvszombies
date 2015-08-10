@@ -14,7 +14,7 @@
 	to these objects.
 */
 
-var Engine = (function(global)) {
+var Engine = (function(global) {
 	/*
 		Create canvas and scope-wide variables
 	*/
@@ -60,14 +60,14 @@ var Engine = (function(global)) {
 		lastTime = Date.now();
 
 		main();
-	};
+	}
 
 	/*
 		update calls other updating methodds
 	*/
 	function update(dt) {
 		updateEntities(dt);
-	};
+	}
 
 	/*
 		updateEntities uses the time delta parameter to update the
@@ -77,7 +77,7 @@ var Engine = (function(global)) {
 		sonic.update();
 
 		zombies.forEach(function(zombie) {
-			zombie.update(dt);
+			zombie.update(dt, collisionCheck());
 		});
 
 		nyancats.forEach(function(cat) {
@@ -87,7 +87,7 @@ var Engine = (function(global)) {
 		bkgdImgs.forEach(function(img) {
 			img.update(dt);
 		});
-	};
+	}
 
 	/*
 		render redraws the game for every loop, similar to a flip book -
@@ -100,9 +100,9 @@ var Engine = (function(global)) {
 			"images/sky1.png", // first level of sky
 			"images/sand1.png", // top level of sand
 			"images/sand2.png"] // bottom level of sand
-		var numRows = 4;
-		var numCols = 5;
-		var row, col;
+		var numRows = 4,
+			numCols = 5,
+			row, col;
 
 		// draw background using images in the row/column / grid format
 		for (row = 0; row < numRows; row++) {
@@ -115,7 +115,7 @@ var Engine = (function(global)) {
 		}
 
 		renderEntities();	
-	};
+	}
 
 	/*
 		renderEntities is called by render on each game loop and calls
@@ -135,14 +135,15 @@ var Engine = (function(global)) {
 		bkgdImgs.forEach(function(img) {
 			img.render();
 		});
-	};
+	}
 
 	/*
 		reset handles gameover and new game screens
 	*/
 	function reset() {
-		// empty for now
-	};
+		// display final score
+		// to play again, press enter
+	}
 
 	/*
 		Load all images needed for game; call init once the images are
@@ -173,8 +174,8 @@ var Engine = (function(global)) {
 		"images/sun1.png",
 		"images/cactus.png",
 		"images/cloud.png",
-		"images/rocks.png"]
-	);
+		"images/rocks.png"
+	]);
 	Resources.onReady(init);
 
 	/*
