@@ -14,6 +14,8 @@
 	to these objects.
 */
 
+"use strict";
+
 var Engine = (function(global) {
 	/*
 		Create canvas and scope-wide variables

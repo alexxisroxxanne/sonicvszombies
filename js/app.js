@@ -14,6 +14,8 @@
 */
 
 
+"use strict";
+
 /*
 	gameBegin function starts the game
 	Parameter - key, user's keyboard input
@@ -62,13 +64,35 @@ Sonic.prototype.update = function(dt) {
 	// mulitply sprite change by dt to ensure that game runs
 	// at the same speed on all computers
 	// this.sprite = this.sprite * dt; // not sure if correct
+
+	var sonicSprite = new Image();
+	sonicSprite.src = "images/sonicsprites.png";
+
+	var spriteObj = sonic.sprites({
+		context: ctx,
+		width: 102.2,
+		height: 117,
+		image: sonicSprite
+	});
+
 };
 
 /*
 	Draw the player character on the screen in canvas' context
 */
 Sonic.prototype.render = function() {
-	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+	ctx.drawImage(Resources.get(this.sprite), 0, 117, 102.2, 117, 30, 250, 102.2, 117);
+};
+
+Sonic.prototype.sprites = function(options) {
+	var that = {};
+
+	that.context = options.context;
+	that.width = options.width;
+	that.height = options.height;
+	that.image = options.image;
+
+	return that;
 };
 
 /*
