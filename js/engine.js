@@ -98,9 +98,9 @@ var Engine = (function(global) {
 		var bkgdRowImgs = [
 			"images/sky2.png", // top row is second level of sky
 			"images/sky1.png", // first level of sky
-			"images/sand1.png", // top level of sand
-			"images/sand2.png"] // bottom level of sand
-		var numRows = 4,
+			"images/sand1.png"]; // top level of sand
+			// "images/sand2.png"] // bottom level of sand
+		var numRows = 3,
 			numCols = 5,
 			row, col;
 
@@ -153,8 +153,9 @@ var Engine = (function(global) {
 		"images/sky2.png",
 		"images/sky1.png",
 		"images/sand1.png",
-		"images/sand2.png",
+		// "images/sand2.png",
 		"images/sonicstill.png",
+		"images/sonicsprites.png",
 		"images/sonicmoving1.png",
 		"images/sonicfast1.png",
 		"images/sonicfast2.png",
