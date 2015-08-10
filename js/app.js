@@ -65,6 +65,7 @@ Sonic.prototype.update = function(dt) {
 	// at the same speed on all computers
 	// this.sprite = this.sprite * dt; // not sure if correct
 
+	/*
 	var sonicSprite = new Image();
 	sonicSprite.src = "images/sonicsprites.png";
 
@@ -74,6 +75,8 @@ Sonic.prototype.update = function(dt) {
 		height: 117,
 		image: sonicSprite
 	});
+
+	*/
 
 };
 
