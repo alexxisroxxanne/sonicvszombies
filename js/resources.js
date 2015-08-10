@@ -21,7 +21,7 @@
 		function of this class to load and cache images
 	*/
 	function load(urlOrArr) {
-		if (urlOrArr instanceOf Array) {
+		if (urlOrArr instanceof Array) {
 			// loop through each value if param passed is array
 			urlOrArr.forEach(function(url) {
 				_load(url);
