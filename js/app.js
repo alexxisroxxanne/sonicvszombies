@@ -15,22 +15,43 @@
 
 
 /*
+	gameBegin function starts the game
+	Parameter - key, user's keyboard input
+
+function gameBegin(key) {
+	ctx.strokeText("Press enter to begin", 0, ctx.height/2);
+
+	if (key === "enter")
+		return true;
+	else
+		return false;
+}
+*/
+
+/*
 	Sonic class creates the player's character, Sonic the Hedgehog
 	Parameters -
 		x and y are the player's initial coordinates
+		sprites passes in a sprite object to add animation
 		speed is the pace of the game based on level
 */
-var Sonic = function(x, y, speed) {
+var Sonic = function(x, y, sprites) {
+	// set initial sprite/image
+	this.sprite = sprites;
+
 	this.x = x;
 	this.y = y;
 
-	this.speed = speed;
+	// this.speed = speed;
 
 	// set initial score to 0
 	this.score = 0;
 
 	// set initial life count to 3
 	this.lives = 3;
+
+	// initialize sonic as alive
+	this.alive === false;
 };
 
 /*
@@ -40,7 +61,7 @@ var Sonic = function(x, y, speed) {
 Sonic.prototype.update = function(dt) {
 	// mulitply sprite change by dt to ensure that game runs
 	// at the same speed on all computers
-	this.sprite = this.sprite * dt; // not sure if correct
+	// this.sprite = this.sprite * dt; // not sure if correct
 };
 
 /*
@@ -109,9 +130,9 @@ Zombie.prototype.render = function() {
 Zombie.prototype.update = function(dt, collisionCheck) {
 	// multiply movement by dt to ensure game runs at same speed across
 	// different browsers
-	this.x = this.x + this.speed * dt;
+	this.x = this.x - this.speed * dt;
 
-	if (collisionCheck === true)
+	if (this.collisionCheck() === true)
 		sonic.loseLife();
 };
 
@@ -157,26 +178,62 @@ var BkgdImages = function(x, y, img, speed) {
 	this.x = x;
 	this.y = y;
 
-	this.sprite = this.img;
+	this.sprite = img;
 
 	this.speed = speed;
 };
 
+/*
+	Update position of background images to give the appearance
+	of moving through the desert
+	Parameter - dt, time delta between loops
+*/
+BkgdImages.prototype.update = function(dt) {
+	this.x = this.x + this.speed * dt;
+};
+
+/*
+	Draw background images on the screen
+*/
+BkgdImages.prototype.render = function() {
+	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+
+// call gameBegin to prompt user to start game
+// gameBegin();
+
+// Place background images in array called bkgdImgs
+var bkgdImgs = [];
+var cactusSprite = "images/cactus.png",
+	rockSprite = "images/rocks.png",
+	cloudSprite = "images/cloud.png",
+	sunSprite = "images/sun1.png";
+var sunImg = new BkgdImages(20, 10, sunSprite, 0);
+bkgdImgs.push(sunImg);
+var cloudImg = new BkgdImages(380, 50, cloudSprite, 0);
+bkgdImgs.push(cloudImg);
+var cactus = new BkgdImages(170, 175, cactusSprite, 0);
+bkgdImgs.push(cactus);
+var rock = new BkgdImages(515, 210, rockSprite, 0);
+bkgdImgs.push(rock);
+
 
 // Create new instance of sonic
-var sonic = new Sonic();
+var sonicSprite = new Sprite("images/sonicsprites.png", [0, 120], [105, 120], 2,
+				[0, 1, 2, 3], "horizontal", false);
+
+var sonics = [];
+var sonic = new Sonic(30, 250, sonicSprite);
+sonics.push(sonic);
 
 // Place zombie objects in array called zombies
 var zombies = [];
-var zombie;
+var zombie = new Zombie(775, 250, 20);
 
 // Place nyancat objects in array called nyancats
 var nyancats = [];
 var cat;
-
-// Place background images in array called bkgdImgs
-var bkgdImgs = [];
-var img;
 
 
 // Listen for key presses and send input to handleInput()
@@ -186,5 +243,6 @@ document.addEventListener("keyup", function(e) {
 		32: "space"
 	};
 
+	// gameBegin(allowedKeys[e.keyCode]);
 	sonic.handleInput(allowedKeys[e.keyCode]);
 });
