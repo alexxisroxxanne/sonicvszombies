@@ -39,12 +39,10 @@ function gameBegin(key) {
 */
 var Sonic = function(x, y) {
 	// set initial sprite/image
-	this.sprite = Sprites();
+	this.sprite = Sprites;
 
 	this.x = x;
 	this.y = y;
-
-	// this.speed = speed;
 
 	// set initial score to 0
 	this.score = 0;
@@ -239,31 +237,16 @@ bkgdImgs.push(cactus);
 var rock = new BkgdImages(515, 210, rockSprite, 0);
 bkgdImgs.push(rock);
 
-
-// Create new instance of sonic
-/*
-var spriteSheet = new Image();
-spriteSheet.src = "images/sonicsprites.png";
-
-var sonicSprite = new sprite({
-	width: 102.2,
-	height: 117,
-	image: spriteSheet
-});
-*/
-
-// var sonics = [];
+// create new instance of sonic
 var sonic = new Sonic(30, 250);
-// sonics.push(sonic);
 
 // Place zombie objects in array called zombies
 var zombies = [];
-var zombie = new Zombie(775, 250, 20);
+// var zombie = new Zombie(775, 250, 20);
 
 // Place nyancat objects in array called nyancats
 var nyancats = [];
 var cat;
-
 
 // Listen for key presses and send input to handleInput()
 document.addEventListener("keyup", function(e) {

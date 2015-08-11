@@ -4,14 +4,15 @@ var Sprites = (function(global) {
 	var sonicSprite = new Image();
 	sonicSprite.src = "images/sonicsprites.png";
 	*/
-	var sonic,
-		soniceSprite;
+	var sonicSprite,
+		soniceSpriteImg;
 
 	// update and render sprite at same speed as browser redraws
 	function gameLoop() {
 		window.requestAnimationFrame(gameLoop);
-		sonic.update();
-		sonic.render();
+		ctx.clearRect(0, 0, 760, 608);
+		sonicSprite.update();
+		sonicSprite.render();
 	}
 
 	function sprite(options) {
@@ -30,9 +31,7 @@ var Sprites = (function(global) {
 		obj.width = options.width;
 		obj.height = options.height;
 		obj.image = options.image;
-		// obj.numberOfFrames = options.numberOfFrames || 1;
 
-		// obj.loop = options.loop;
 		obj.update = function() {
 			tickCount += 1;
 
@@ -53,7 +52,7 @@ var Sprites = (function(global) {
 
 		obj.render = function() {
 			// clear the canvas
-			obj.context.clearRect(0, 0, obj.width, obj.height);
+			// obj.context.clearRect(0, 0, obj.width, obj.height);
 
 			// draw animation
 			obj.context.drawImage(
@@ -73,18 +72,18 @@ var Sprites = (function(global) {
 		return obj;
 	}
 
-	sonicSprite = new Image();
+	sonicSpriteImg = new Image();
 
-	sonic = sprite({
+	sonicSprite = sprite({
 		context: ctx,
 		width: 408.8,
 		height: 117,
-		image: sonicSprite,
+		image: sonicSpriteImg,
 		numberOfFrames: 4,
 		ticksPerFrame: 3
 	});
 
 	// start game loop as soon as sprite sheet is loaded
-	sonicSprite.addEventListener("load", gameLoop);
-	sonicSprite.src = "images/sonicrunningsheet.png";
+	sonicSpriteImg.addEventListener("load", gameLoop);
+	sonicSpriteImg.src = "images/sonicrunningsheet.png";
 }());
