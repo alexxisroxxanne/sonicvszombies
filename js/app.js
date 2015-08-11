@@ -37,9 +37,9 @@ function gameBegin(key) {
 		sprites passes in a sprite object to add animation
 		speed is the pace of the game based on level
 */
-var Sonic = function(x, y, sprites) {
+var Sonic = function(x, y) {
 	// set initial sprite/image
-	this.sprite = sprites;
+	this.sprite = Sprites();
 
 	this.x = x;
 	this.y = y;
@@ -77,6 +77,7 @@ Sonic.prototype.update = function(dt) {
 	});
 
 	*/
+	// Sprites();
 
 };
 
@@ -84,18 +85,11 @@ Sonic.prototype.update = function(dt) {
 	Draw the player character on the screen in canvas' context
 */
 Sonic.prototype.render = function() {
-	ctx.drawImage(Resources.get(this.sprite), 0, 117, 102.2, 117, 30, 250, 102.2, 117);
+	// ctx.drawImage(Resources.get(this.sprite), 30, 250);
 };
 
-Sonic.prototype.sprites = function(options) {
-	var that = {};
-
-	that.context = options.context;
-	that.width = options.width;
-	that.height = options.height;
-	that.image = options.image;
-
-	return that;
+Sonic.prototype.sprites = function() {
+	// this.sprite = Sprites;	
 };
 
 /*
@@ -247,12 +241,20 @@ bkgdImgs.push(rock);
 
 
 // Create new instance of sonic
-var sonicSprite = new Sprite("images/sonicsprites.png", [0, 120], [105, 120], 2,
-				[0, 1, 2, 3], "horizontal", false);
+/*
+var spriteSheet = new Image();
+spriteSheet.src = "images/sonicsprites.png";
 
-var sonics = [];
-var sonic = new Sonic(30, 250, sonicSprite);
-sonics.push(sonic);
+var sonicSprite = new sprite({
+	width: 102.2,
+	height: 117,
+	image: spriteSheet
+});
+*/
+
+// var sonics = [];
+var sonic = new Sonic(30, 250);
+// sonics.push(sonic);
 
 // Place zombie objects in array called zombies
 var zombies = [];

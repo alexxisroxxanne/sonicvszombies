@@ -156,6 +156,7 @@ var Engine = (function(global) {
 		"images/sky1.png",
 		"images/sand1.png",
 		// "images/sand2.png",
+		"images/sonicrunningsheet.png",
 		"images/sonicstill.png",
 		"images/sonicsprites.png",
 		"images/sonicmoving1.png",
