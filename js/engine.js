@@ -79,7 +79,7 @@ var Engine = (function(global) {
 		sonic.update();
 
 		zombies.forEach(function(zombie) {
-			zombie.update(dt, collisionCheck());
+			zombie.update(dt);
 		});
 
 		nyancats.forEach(function(cat) {

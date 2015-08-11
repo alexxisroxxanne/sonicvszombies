@@ -112,6 +112,8 @@ var Zombie = function(x, y, speed) {
 	this.y = y;
 
 	this.speed = speed;
+
+	console.log("zombie loaded");
 };
 
 /*
@@ -128,13 +130,15 @@ Zombie.prototype.render = function() {
 		collisionCheck - function that returns true if sonic and zombie
 		collide
 */
-Zombie.prototype.update = function(dt, collisionCheck) {
+Zombie.prototype.update = function(dt) {
 	// multiply movement by dt to ensure game runs at same speed across
 	// different browsers
-	this.x = this.x - this.speed * dt;
+	this.x = this.x + this.speed * dt;
 
+	/*
 	if (this.collisionCheck() === true)
 		sonic.loseLife();
+	*/
 };
 
 /*
@@ -225,8 +229,10 @@ console.log("sonic is instantiated");
 
 // Place zombie objects in array called zombies
 var zombies = [];
-// var zombie = new Zombie(775, 250, 20);
-
+var zombie = new Zombie(500, 250, -20);
+zombies.push(zombie);
+console.log(zombies.length);
+console.log(zombie.location);
 // Place nyancat objects in array called nyancats
 var nyancats = [];
 var cat;

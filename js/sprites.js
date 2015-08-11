@@ -81,7 +81,7 @@ var Sprites = (function(global) {
 		height: 117,
 		image: sonicSpriteImg,
 		numberOfFrames: 4,
-		ticksPerFrame: 4
+		ticksPerFrame: 6
 	});
 
 	// start game loop as soon as sprite sheet is loaded
