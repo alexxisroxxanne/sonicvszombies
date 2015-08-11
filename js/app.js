@@ -36,19 +36,9 @@ var rightBound = 0,
 
 /*
 	Sonic class creates the player's character, Sonic the Hedgehog
-	Parameters -
-		x and y are the player's initial coordinates
-		sprites passes in a sprite object to add animation
-		speed is the pace of the game based on level
 */
-var Sonic = function(x, y) {
-	// set initial sprite/image
-
+var Sonic = function() {
 	console.log("sonic is loaded");
-	// this.sprite = Sprites;
-
-	this.x = x;
-	this.y = y;
 
 	// set initial score to 0
 	this.score = 0;
@@ -230,7 +220,7 @@ var rock = new BkgdImages(515, 210, rockSprite, 0);
 bkgdImgs.push(rock);
 
 // create new instance of sonic
-var sonic = new Sonic(30, 250);
+var sonic = new Sonic();
 console.log("sonic is instantiated");
 
 // Place zombie objects in array called zombies
