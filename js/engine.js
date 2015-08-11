@@ -72,7 +72,7 @@ var Engine = (function(global) {
 	}
 
 	/*
-		updateEntities uses the time delta parameter to update the
+		updateEntities uses the time delta parameter to update the 
 		location/other properties of the sprites in the game
 	*/
 	function updateEntities(dt) {

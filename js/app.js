@@ -30,6 +30,10 @@ function gameBegin(key) {
 }
 */
 
+// canvas bounds
+var rightBound = 0,
+	leftBound = 760;
+
 /*
 	Sonic class creates the player's character, Sonic the Hedgehog
 	Parameters -
@@ -39,7 +43,9 @@ function gameBegin(key) {
 */
 var Sonic = function(x, y) {
 	// set initial sprite/image
-	this.sprite = Sprites;
+
+	console.log("sonic is loaded");
+	// this.sprite = Sprites;
 
 	this.x = x;
 	this.y = y;
@@ -51,7 +57,9 @@ var Sonic = function(x, y) {
 	this.lives = 3;
 
 	// initialize sonic as alive
-	this.alive === false;
+	// this.alive === false;
+
+
 };
 
 /*
@@ -59,35 +67,14 @@ var Sonic = function(x, y) {
 	Parameter - dt, the time delta between loops
 */
 Sonic.prototype.update = function(dt) {
-	// mulitply sprite change by dt to ensure that game runs
-	// at the same speed on all computers
-	// this.sprite = this.sprite * dt; // not sure if correct
-
-	/*
-	var sonicSprite = new Image();
-	sonicSprite.src = "images/sonicsprites.png";
-
-	var spriteObj = sonic.sprites({
-		context: ctx,
-		width: 102.2,
-		height: 117,
-		image: sonicSprite
-	});
-
-	*/
-	// Sprites();
-
+	sonicSprite.update();
 };
 
 /*
 	Draw the player character on the screen in canvas' context
 */
 Sonic.prototype.render = function() {
-	// ctx.drawImage(Resources.get(this.sprite), 30, 250);
-};
-
-Sonic.prototype.sprites = function() {
-	// this.sprite = Sprites;	
+	sonicSprite.render();
 };
 
 /*
@@ -105,12 +92,17 @@ Sonic.prototype.handleInput = function(key) {
 };
 
 Sonic.prototype.loseLife = function() {
+	// reset score
 	this.score = 0;
+
 	this.x = 0;
 	this.y = 50;
+
+	// decrease life count
 	this.lives--;
 
-	if (this.lives = 0)
+	// game over when no more lives
+	if (this.lives === 0)
 		reset();
 };
 
@@ -239,6 +231,7 @@ bkgdImgs.push(rock);
 
 // create new instance of sonic
 var sonic = new Sonic(30, 250);
+console.log("sonic is instantiated");
 
 // Place zombie objects in array called zombies
 var zombies = [];

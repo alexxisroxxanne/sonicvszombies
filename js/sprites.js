@@ -1,16 +1,17 @@
+var sonicSprite,
+	soniceSpriteImg;
 var Sprites = (function(global) {
 
 	/*
 	var sonicSprite = new Image();
 	sonicSprite.src = "images/sonicsprites.png";
 	*/
-	var sonicSprite,
-		soniceSpriteImg;
+
 
 	// update and render sprite at same speed as browser redraws
 	function gameLoop() {
 		window.requestAnimationFrame(gameLoop);
-		ctx.clearRect(0, 0, 760, 608);
+		// ctx.clearRect(0, 0, 760, 608);
 		sonicSprite.update();
 		sonicSprite.render();
 	}
@@ -86,4 +87,7 @@ var Sprites = (function(global) {
 	// start game loop as soon as sprite sheet is loaded
 	sonicSpriteImg.addEventListener("load", gameLoop);
 	sonicSpriteImg.src = "images/sonicrunningsheet.png";
+	console.log("Sprites file is opened")
+
+	return sonicSpriteImg;
 }());
