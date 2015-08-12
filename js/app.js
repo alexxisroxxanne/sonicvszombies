@@ -31,8 +31,8 @@ function gameBegin(key) {
 */
 
 // canvas bounds
-var rightBound = 0,
-	leftBound = 760;
+var rightBound = 760,
+	leftBound = 0;
 
 /*
 	Sonic class creates the player's character, Sonic the Hedgehog
@@ -45,6 +45,9 @@ var Sonic = function() {
 
 	// set initial life count to 3
 	this.lives = 3;
+
+	// set initial level to 1
+	this.level = 1;
 
 	// initialize sonic as alive
 	// this.alive === false;
@@ -113,6 +116,10 @@ var Zombie = function(x, y, speed) {
 
 	this.speed = speed;
 
+	this.setSpawnPoint();
+
+	this.count = this.setNewCount();
+
 	console.log("zombie loaded");
 };
 
@@ -135,10 +142,22 @@ Zombie.prototype.update = function(dt) {
 	// different browsers
 	this.x = this.x + this.speed * dt;
 
+	this.boundsCheck();
+
+	this.checkSpawnPoint();
+
 	/*
 	if (this.collisionCheck() === true)
 		sonic.loseLife();
 	*/
+
+	// console.log("zombie updated");
+};
+
+Zombie.prototype.checkSpawnPoint = function() {
+	if (this.spawnPoint.valueOf() === this.x.valueOf) {
+		zombies.push(new Zombie(760, 250, -40 * sonic.level));
+	}
 };
 
 /*
@@ -152,6 +171,32 @@ Zombie.prototype.collisionCheck = function() {
 		return false;
 };
 
+Zombie.prototype.boundsCheck = function() {
+	
+	if (this.x <= leftBound) {
+		this.x = 760;
+		this.setSpawnPoint();
+	}
+
+	/*
+	if (this.count <= 1) {
+		this.setNewCount();
+		this.x = 760;
+		this.y = 250;
+		this.speed = (-40 * sonic.level);
+		console.log("count thing");
+	}
+	*/
+};
+
+Zombie.prototype.setNewCount = function() {
+	this.count = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
+	// return this.count;
+};
+
+Zombie.prototype.setSpawnPoint = function() {
+	this.spawnPoint = Math.floor(Math.random() * (750 - 10 + 1)) + 10;
+};
 
 /*
 	NyanCat class creates the nyan cat objects that sonic collects
@@ -229,10 +274,42 @@ console.log("sonic is instantiated");
 
 // Place zombie objects in array called zombies
 var zombies = [];
-var zombie = new Zombie(500, 250, -20);
+// var zombie;
+
+var zombie = new Zombie(760, 250, -40 * sonic.level);
 zombies.push(zombie);
+console.log(zombie.spawnPoint);
+/*
+// zombie.setNewCount();
+if (zombie.x === zombie.spawnPoint) {
+	zombies.forEach(
+		zombies.push(zombie);
+)};
+
+do {
+	var initX = 760;
+	var initY = 250;
+	var speed = -40 * sonic.level;
+	// var spawnPoint = zombies.setSpawnPoint();
+	var i = 0;
+	zombie = new Zombie(initX, initY, speed);
+	zombies.push(zombie);
+} while ({
+	zombies[i].x == zombies[i].spawnPoint;
+	i++;
+});
+*/
+/*
+for (var i = 0; i < zombies.count; i++) {
+	var x = 760;
+	var y = 250;
+	var speed = (-40 * sonic.level);
+	zombie = new Zombie(x, y, speed);
+	zombies.push(zombie);
+}
+*/
 console.log(zombies.length);
-console.log(zombie.location);
+
 // Place nyancat objects in array called nyancats
 var nyancats = [];
 var cat;
