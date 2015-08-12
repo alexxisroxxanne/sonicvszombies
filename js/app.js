@@ -168,8 +168,27 @@ var NyanCat = function(x, y, speed) {
 	this.y = y;
 
 	this.speed = speed;
+
+	console.log("im a cat");
 };
 
+NyanCat.prototype.update = function(dt) {
+	this.x = this.x + this.speed * dt;
+
+	this.boundsCheck();
+};
+
+NyanCat.prototype.render = function() {
+	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+NyanCat.prototype.boundsCheck = function() {
+	/*
+	if (this.x <== leftBound) {
+		this.x = 760;
+	}
+	*/
+};
 
 /*
 	BkgdImages class creates the background images that create
@@ -208,6 +227,23 @@ BkgdImages.prototype.render = function() {
 // call gameBegin to prompt user to start game
 // gameBegin();
 
+
+
+// create new instance of sonic
+var sonic = new Sonic();
+console.log("sonic is instantiated");
+
+// Place zombie objects in array called zombies
+var zombies = [];
+var zombie = new Zombie(760, 250, -40);
+zombies.push(zombie);
+console.log(zombies.length);
+console.log(zombie.location);
+// Place nyancat objects in array called nyancats
+var nyancats = [];
+var cat = new NyanCat(760, 150, -40);
+nyancats.push(cat);
+
 // Place background images in array called bkgdImgs
 var bkgdImgs = [];
 var cactusSprite = "images/cactus.png",
@@ -222,20 +258,6 @@ var cactus = new BkgdImages(170, 175, cactusSprite, 0);
 bkgdImgs.push(cactus);
 var rock = new BkgdImages(515, 210, rockSprite, 0);
 bkgdImgs.push(rock);
-
-// create new instance of sonic
-var sonic = new Sonic();
-console.log("sonic is instantiated");
-
-// Place zombie objects in array called zombies
-var zombies = [];
-var zombie = new Zombie(500, 250, -20);
-zombies.push(zombie);
-console.log(zombies.length);
-console.log(zombie.location);
-// Place nyancat objects in array called nyancats
-var nyancats = [];
-var cat;
 
 // Listen for key presses and send input to handleInput()
 document.addEventListener("keyup", function(e) {
