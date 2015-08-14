@@ -109,20 +109,21 @@ Sonic.prototype.loseLife = function() {
 		x and y are initial zombie coordinates
 		speed is how fast game is moving
 */
-var Zombie = function(x, y, speed) {
+var Zombie = function() {
 	// set zombie image/sprite
 	this.sprite = "images/zombie.png";
 
 	// set zombie initial location and speed
-	this.x = x;
-	this.y = y;
-	this.speed = speed;
+	this.setSpawnLocation(); // sets random x-coordinate off-screen
+	this.y = 250; // constant
+	this.setSpeed();
 
 	// max number of zombies
 	this.maxNumber = 5 + sonic.level;
 
-	this.setSpawnPoint();
-	this.setSpawnTime();
+	// set random values to help with random spawn times
+	this.setRandom1();
+	this.setRandom2();
 
 	// this.count = 1;
 
@@ -152,19 +153,18 @@ Zombie.prototype.update = function(dt) {
 	// time is between 10 and 19
 	var time = dt * 1000.0;
 
-	// random spawn point for initial zombie locations
-	var randomX;
-
-	// while the number of zombies is less than the max number allowed
+	// if number of zombies is less than max number of zombies...
 	if (zombies.length < this.maxNumber) {
-		// if two random numbers equal each other
-		if (this.spawnPoint == this.spawnTime) {
-			// spawn a new zombie in a random location
-			randomX = Math.floor(Math.random() * (1200 - 750 + 1)) + 750;
-			zombies.push(new Zombie(randomX, 250, -70 * sonic.level));
-		// otherwise, change one of the random numbers to a new random #
+
+		// and if two random numbers equal each other
+		if (this.random1 == this.random2) {
+			// spawn a new zombie
+			zombies.push(new Zombie());
+
+		// otherwise...
 		} else {
-			this.setSpawnTime();
+			// change first random number
+			this.setRandom1();
 		}
 	}
 	
@@ -189,27 +189,43 @@ Zombie.prototype.collisionCheck = function() {
 Zombie.prototype.boundsCheck = function() {
 	
 	if (this.x <= leftBound) {
-		this.newSpawnPoint();
-		this.setSpawnPoint();
-		this.setSpawnTime();
+		this.setSpawnLocation();
 	}
-};
-
-Zombie.prototype.setSpawnTime = function(dt) {
-	// set spawnTime between 10 and 10000
-	this.spawnTime = Math.floor(Math.random() * (750 - 10 + 1)) + 10;
-};
-
-Zombie.prototype.setSpawnPoint = function() {
-	this.spawnPoint = Math.floor(Math.random() * (750 - 10 + 1)) + 10;
 };
 
 /*
 	Place zombie at random new x-coordinate
 */
-Zombie.prototype.newSpawnPoint = function() {
+Zombie.prototype.setSpawnLocation = function() {
 	this.x = Math.floor(Math.random() * (1250 - 750 + 1)) + 750;
 };
+
+/*
+	Set zombie speed
+*/
+Zombie.prototype.setSpeed = function() {
+	// get a random number between 1 and 20
+	var randomMult = Math.floor(Math.random() * (20 - 1 + 1)) + 1;
+
+	// set random speed, with min being 41
+	this.speed = - (30 + randomMult + (10 * sonic.level));
+};
+
+/*
+	Set first random number - used for random spawn times
+*/
+Zombie.prototype.setRandom1 = function() {
+	// set spawnTime between 10 and 10000
+	this.random1 = Math.floor(Math.random() * (750 - 10 + 1)) + 10;
+};
+
+/*
+	Set second random number - used for random spawn times
+*/
+Zombie.prototype.setRandom2 = function() {
+	this.random2 = Math.floor(Math.random() * (750 - 10 + 1)) + 10;
+};
+
 
 
 
@@ -289,16 +305,20 @@ BkgdImages.prototype.render = function() {
 var sonic = new Sonic();
 console.log("sonic is instantiated");
 
+
 // Place zombie objects in array called zombies
 var zombies = [];
-var zombie = new Zombie(760, 250, -40);
+var zombie = new Zombie();
 zombies.push(zombie);
 console.log(zombies.length);
 console.log(zombie.location);
+
+
 // Place nyancat objects in array called nyancats
 var nyancats = [];
 var cat = new NyanCat(760, 150, -40);
 nyancats.push(cat);
+
 
 // Place background images in array called bkgdImgs
 var bkgdImgs = [];
