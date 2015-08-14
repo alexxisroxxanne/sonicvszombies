@@ -149,10 +149,6 @@ Zombie.prototype.update = function(dt) {
 	// different browsers
 	this.x = this.x + this.speed * dt;
 
-
-	// time is between 10 and 19
-	var time = dt * 1000.0;
-
 	// if number of zombies is less than max number of zombies...
 	if (zombies.length < this.maxNumber) {
 
@@ -236,14 +232,14 @@ Zombie.prototype.setRandom2 = function() {
 		x and y are initial coordinates of nyancats
 		speed is how fast game is moving
 */
-var NyanCat = function(x, y, speed) {
+var NyanCat = function() {
 	// set the nyancat image/sprite
 	this.sprite = "images/nyancat.png";
 
-	this.x = x;
-	this.y = y;
+	this.setSpawnLocation();
+	this.y = 150;
 
-	this.speed = speed;
+	this.setSpeed();
 
 	console.log("im a cat");
 };
@@ -259,7 +255,17 @@ NyanCat.prototype.render = function() {
 };
 
 NyanCat.prototype.boundsCheck = function() {
+	if (this.x <= leftBound) {
+		this.setSpawnLocation();
+	}
+};
 
+NyanCat.prototype.setSpawnLocation = function() {
+	this.x = Math.floor(Math.random() * (1250 - 750 + 1)) + 750;
+};
+
+NyanCat.prototype.setSpeed = function() {
+	this.speed = - (35 + (10 * sonic.level));
 };
 
 /*
@@ -316,7 +322,7 @@ console.log(zombie.location);
 
 // Place nyancat objects in array called nyancats
 var nyancats = [];
-var cat = new NyanCat(760, 150, -40);
+var cat = new NyanCat();
 nyancats.push(cat);
 
 
