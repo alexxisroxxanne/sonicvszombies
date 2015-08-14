@@ -151,12 +151,14 @@ Zombie.prototype.update = function(dt) {
 
 	// time is between 10 and 19
 	var time = dt * 1000.0;
+	var randomX;
 
 	this.timeMult * time;
 
 	if (zombies.length < this.maxNumber) {
 		if (this.spawnPoint == this.spawnTime) {
-			zombies.push(new Zombie(760, 250, -40 * sonic.level));
+			randomX = Math.floor(Math.random() * (1200 - 750 + 1)) + 750;
+			zombies.push(new Zombie(randomX, 250, -40 * sonic.level));
 			this.setSpawnTime();
 			this.setSpawnPoint();
 			this.count++;
@@ -207,8 +209,9 @@ Zombie.prototype.collisionCheck = function() {
 Zombie.prototype.boundsCheck = function() {
 	
 	if (this.x <= leftBound) {
-		this.x = 760;
+		this.newSpawnPoint();
 		this.setSpawnPoint();
+		this.setSpawnTime();
 	}
 
 	/*
@@ -236,6 +239,9 @@ Zombie.prototype.setSpawnPoint = function() {
 	this.spawnPoint = Math.floor(Math.random() * (750 - 10 + 1)) + 10;
 };
 
+Zombie.prototype.newSpawnPoint = function() {
+	this.x = Math.floor(Math.random() * (1250 - 750 + 1)) + 750;
+};
 /*
 	NyanCat class creates the nyan cat objects that sonic collects
 	to gain points
