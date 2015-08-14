@@ -159,6 +159,7 @@ var Engine = (function(global) {
 		"images/sonicrunningsheet.png",
 		"images/sonicstill.png",
 		"images/sonicsprites.png",
+		/*
 		"images/sonicmoving1.png",
 		"images/sonicfast1.png",
 		"images/sonicfast2.png",
@@ -173,6 +174,8 @@ var Engine = (function(global) {
 		"images/sonicball7.png",
 		"images/sonicball8.png",
 		"images/sonicball9.png",
+		*/
+		"images/sonicjumping.png",
 		"images/nyancat.png",
 		"images/zombie.png",
 		"images/sun1.png",
