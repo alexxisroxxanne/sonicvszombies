@@ -31,8 +31,8 @@ function gameBegin(key) {
 */
 
 // canvas bounds
-var rightBound = 0,
-	leftBound = 760;
+var rightBound = 760,
+	leftBound = 0;
 
 /*
 	Sonic class creates the player's character, Sonic the Hedgehog
@@ -45,6 +45,9 @@ var Sonic = function() {
 
 	// set initial life count to 3
 	this.lives = 3;
+
+	// set initial level to 1
+	this.level = 1;
 
 	// initialize sonic as alive
 	// this.alive === false;
@@ -113,6 +116,16 @@ var Zombie = function(x, y, speed) {
 
 	this.speed = speed;
 
+	this.maxNumber = 6;
+
+	this.setSpawnPoint();
+
+	this.setSpawnTime();
+
+	this.count = 1;
+
+	// this.count = this.setNewCount();
+
 	console.log("zombie loaded");
 };
 
@@ -135,12 +148,51 @@ Zombie.prototype.update = function(dt) {
 	// different browsers
 	this.x = this.x + this.speed * dt;
 
+
+	// time is between 10 and 19
+	var time = dt * 1000.0;
+
+	this.timeMult * time;
+
+	if (zombies.length < this.maxNumber) {
+		if (this.spawnPoint == this.spawnTime) {
+			zombies.push(new Zombie(760, 250, -40 * sonic.level));
+			this.setSpawnTime();
+			this.setSpawnPoint();
+			this.count++;
+		} else {
+			this.setSpawnTime();
+		}
+	} else {
+		this.setSpawnTime();
+		this.setSpawnPoint();
+	}
+	// console.log(time);
+	
+	this.boundsCheck();
+
+	// this.checkSpawnPoint();
+	/*
+	if (time == this.spawnTime) {
+		zombies.push(new Zombie(760, 250, -40 * sonic.level));
+		this.setSpawnTime();
+	}
+	*/
 	/*
 	if (this.collisionCheck() === true)
 		sonic.loseLife();
 	*/
+
+	// console.log("zombie updated");
 };
 
+/*
+Zombie.prototype.checkSpawnPoint = function() {
+	if (this.spawnPoint.valueOf() === this.x.valueOf) {
+		zombies.push(new Zombie(760, 250, -40 * sonic.level));
+	}
+};
+*/
 /*
 	Check for collisions between zombie and sonic
 	Return true if collide; false if have not collided
@@ -152,6 +204,37 @@ Zombie.prototype.collisionCheck = function() {
 		return false;
 };
 
+Zombie.prototype.boundsCheck = function() {
+	
+	if (this.x <= leftBound) {
+		this.x = 760;
+		this.setSpawnPoint();
+	}
+
+	/*
+	if (this.count <= 1) {
+		this.setNewCount();
+		this.x = 760;
+		this.y = 250;
+		this.speed = (-40 * sonic.level);
+		console.log("count thing");
+	}
+	*/
+};
+
+Zombie.prototype.setSpawnTime = function(dt) {
+
+	// multiply time by random number
+	this.timeMult =  Math.floor(Math.random() * (1000 - 1 + 1)) + 1;
+
+	// set spawnTime between 10 and 10000
+	this.spawnTime = Math.floor(Math.random() * (750 - 10 + 1)) + 10;
+	// return this.count;
+};
+
+Zombie.prototype.setSpawnPoint = function() {
+	this.spawnPoint = Math.floor(Math.random() * (750 - 10 + 1)) + 10;
+};
 
 /*
 	NyanCat class creates the nyan cat objects that sonic collects
