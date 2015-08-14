@@ -11,7 +11,7 @@ var Sprites = (function(global) {
 	// update and render sprite at same speed as browser redraws
 	function gameLoop() {
 		window.requestAnimationFrame(gameLoop);
-		// ctx.clearRect(0, 0, 760, 608);
+		ctx.clearRect(0, 0, 760, 608);
 		sonicSprite.update();
 		sonicSprite.render();
 	}
@@ -32,6 +32,8 @@ var Sprites = (function(global) {
 		obj.width = options.width;
 		obj.height = options.height;
 		obj.image = options.image;
+		obj.x = options.x || 30;
+		obj.y = options.y || 250;
 
 		obj.update = function() {
 			tickCount += 1;
@@ -62,8 +64,8 @@ var Sprites = (function(global) {
 				0,
 				obj.width / numberOfFrames,
 				obj.height,
-				30,
-				250,
+				obj.x,
+				obj.y,
 				obj.width / numberOfFrames,
 				obj.height);
 		};
@@ -87,7 +89,7 @@ var Sprites = (function(global) {
 	// start game loop as soon as sprite sheet is loaded
 	sonicSpriteImg.addEventListener("load", gameLoop);
 	sonicSpriteImg.src = "images/sonicrunningsheet.png";
-	console.log("Sprites file is opened")
+	console.log("Sprites file is opened");
 
-	return sonicSpriteImg;
+	// return sonicSpriteImg;
 }());

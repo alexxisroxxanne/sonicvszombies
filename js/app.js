@@ -34,6 +34,9 @@ function gameBegin(key) {
 var rightBound = 760,
 	leftBound = 0;
 
+
+
+
 /*
 	Sonic class creates the player's character, Sonic the Hedgehog
 */
@@ -49,10 +52,9 @@ var Sonic = function() {
 	// set initial level to 1
 	this.level = 1;
 
+	this.jumpSpeed = 20;
 	// initialize sonic as alive
 	// this.alive === false;
-
-
 };
 
 /*
@@ -62,6 +64,7 @@ var Sonic = function() {
 Sonic.prototype.update = function(dt) {
 	// use sprites update method
 	sonicSprite.update();
+	// this.handleInput(key);
 };
 
 /*
@@ -81,9 +84,9 @@ Sonic.prototype.handleInput = function(key) {
 	if (key === "enter")
 		if (this.newGame)
 			this
+		*/
 	if (key === "space")
-		// jump
-	*/
+		this.jump();
 };
 
 Sonic.prototype.loseLife = function() {
@@ -101,6 +104,34 @@ Sonic.prototype.loseLife = function() {
 		reset();
 };
 
+Sonic.prototype.jump = function(dt) {
+	/*
+	// set dt from 10 to 19
+	var mult = dt * 1000.0;
+	// add up time
+	var time += mult;
+
+	if (time < 300 && this.y > 75)
+		this.y = this.y + this.jumpSpeed * dt;
+	else if (time >= 300 || this.y <= 75)
+		this.y = - (this.y + this.jumpSpeed * dt);
+	else
+		this.y = 250;
+	*/
+	/*
+	if (this.y > 75)
+		this.y = this.y + this.jumpSpeed * dt;
+	
+	this.y = 75;
+
+	if (this.y = 75)
+		this.y = - (this.y + this.jumpSpeed * dt);
+
+	this.y = 250;
+	*/
+
+	this.y == 75;
+};
 
 /*
 	Zombie class creates the zombie/obstacle objects that sonic must
@@ -224,7 +255,6 @@ Zombie.prototype.setRandom2 = function() {
 
 
 
-
 /*
 	NyanCat class creates the nyan cat objects that sonic collects
 	to gain points
@@ -236,37 +266,60 @@ var NyanCat = function() {
 	// set the nyancat image/sprite
 	this.sprite = "images/nyancat.png";
 
+	// set x and y coordinates
 	this.setSpawnLocation();
-	this.y = 150;
+	this.y = 75;
 
+	// set cat speed
 	this.setSpeed();
 
 	console.log("im a cat");
 };
 
+/*
+	Update nyancat location/position
+	Parameters -
+		dt, time delta between loops
+		collisionCheck - function that returns true if sonic and zombie
+		collide
+*/
 NyanCat.prototype.update = function(dt) {
 	this.x = this.x + this.speed * dt;
 
 	this.boundsCheck();
 };
 
+/*
+	Draw NyanCat on the screen
+*/
 NyanCat.prototype.render = function() {
 	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+/*
+	Reset NyanCat if passes leftbounds
+*/
 NyanCat.prototype.boundsCheck = function() {
 	if (this.x <= leftBound) {
 		this.setSpawnLocation();
 	}
 };
 
+/*
+	Set random spawn location out of right bounds
+*/
 NyanCat.prototype.setSpawnLocation = function() {
 	this.x = Math.floor(Math.random() * (1250 - 750 + 1)) + 750;
 };
 
+/*
+	Set speed of cat based on sonic's level
+*/
 NyanCat.prototype.setSpeed = function() {
 	this.speed = - (35 + (10 * sonic.level));
 };
+
+
 
 /*
 	BkgdImages class creates the background images that create
@@ -282,7 +335,8 @@ var BkgdImages = function(x, y, img, speed) {
 
 	this.sprite = img;
 
-	this.speed = speed;
+	this.setSpeed();
+	this.speed = speed * this.speedMult;
 };
 
 /*
@@ -292,6 +346,8 @@ var BkgdImages = function(x, y, img, speed) {
 */
 BkgdImages.prototype.update = function(dt) {
 	this.x = this.x + this.speed * dt;
+
+	this.boundsCheck();
 };
 
 /*
@@ -300,6 +356,23 @@ BkgdImages.prototype.update = function(dt) {
 BkgdImages.prototype.render = function() {
 	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+
+/*
+	Set speed of background images so sonic appears to be moving
+*/
+BkgdImages.prototype.setSpeed = function() {
+	this.speedMult = - (20 + (10 * sonic.level));
+};
+
+/*
+	Reset bkgd images if they pass left bounds
+*/
+BkgdImages.prototype.boundsCheck = function() {
+	if (this.x <= leftBound) {
+		this.x = 760;
+	}
+};
+
 
 
 // call gameBegin to prompt user to start game
@@ -334,12 +407,14 @@ var cactusSprite = "images/cactus.png",
 	sunSprite = "images/sun1.png";
 var sunImg = new BkgdImages(20, 10, sunSprite, 0);
 bkgdImgs.push(sunImg);
-var cloudImg = new BkgdImages(380, 50, cloudSprite, 0);
+var cloudImg = new BkgdImages(380, 50, cloudSprite, 0.5);
 bkgdImgs.push(cloudImg);
-var cactus = new BkgdImages(170, 175, cactusSprite, 0);
+var cactus = new BkgdImages(170, 175, cactusSprite, 1);
 bkgdImgs.push(cactus);
-var rock = new BkgdImages(515, 210, rockSprite, 0);
+var rock = new BkgdImages(515, 210, rockSprite, 1);
 bkgdImgs.push(rock);
+
+
 
 // Listen for key presses and send input to handleInput()
 document.addEventListener("keyup", function(e) {
