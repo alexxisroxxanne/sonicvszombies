@@ -60,6 +60,7 @@ var Sonic = function() {
 	Parameter - dt, the time delta between loops
 */
 Sonic.prototype.update = function(dt) {
+	// use sprites update method
 	sonicSprite.update();
 };
 
@@ -67,6 +68,7 @@ Sonic.prototype.update = function(dt) {
 	Draw the player character on the screen in canvas' context
 */
 Sonic.prototype.render = function() {
+	// use sprites render method
 	sonicSprite.render();
 };
 
@@ -111,20 +113,18 @@ var Zombie = function(x, y, speed) {
 	// set zombie image/sprite
 	this.sprite = "images/zombie.png";
 
+	// set zombie initial location and speed
 	this.x = x;
 	this.y = y;
-
 	this.speed = speed;
 
-	this.maxNumber = 6;
+	// max number of zombies
+	this.maxNumber = 5 + sonic.level;
 
 	this.setSpawnPoint();
-
 	this.setSpawnTime();
 
-	this.count = 1;
-
-	// this.count = this.setNewCount();
+	// this.count = 1;
 
 	console.log("zombie loaded");
 };
@@ -151,50 +151,27 @@ Zombie.prototype.update = function(dt) {
 
 	// time is between 10 and 19
 	var time = dt * 1000.0;
+
+	// random spawn point for initial zombie locations
 	var randomX;
 
-	this.timeMult * time;
-
+	// while the number of zombies is less than the max number allowed
 	if (zombies.length < this.maxNumber) {
+		// if two random numbers equal each other
 		if (this.spawnPoint == this.spawnTime) {
+			// spawn a new zombie in a random location
 			randomX = Math.floor(Math.random() * (1200 - 750 + 1)) + 750;
-			zombies.push(new Zombie(randomX, 250, -40 * sonic.level));
-			this.setSpawnTime();
-			this.setSpawnPoint();
-			this.count++;
+			zombies.push(new Zombie(randomX, 250, -70 * sonic.level));
+		// otherwise, change one of the random numbers to a new random #
 		} else {
 			this.setSpawnTime();
 		}
-	} else {
-		this.setSpawnTime();
-		this.setSpawnPoint();
 	}
-	// console.log(time);
 	
+	// check if zombies are still in bounds
 	this.boundsCheck();
-
-	// this.checkSpawnPoint();
-	/*
-	if (time == this.spawnTime) {
-		zombies.push(new Zombie(760, 250, -40 * sonic.level));
-		this.setSpawnTime();
-	}
-	*/
-	/*
-	if (this.collisionCheck() === true)
-		sonic.loseLife();
-	*/
-
-	// console.log("zombie updated");
 };
 
-/*
-Zombie.prototype.checkSpawnPoint = function() {
-	if (this.spawnPoint.valueOf() === this.x.valueOf) {
-		zombies.push(new Zombie(760, 250, -40 * sonic.level));
-	}
-};
-*/
 /*
 	Check for collisions between zombie and sonic
 	Return true if collide; false if have not collided
@@ -206,6 +183,9 @@ Zombie.prototype.collisionCheck = function() {
 		return false;
 };
 
+/*
+	Reset zombie to random location once zombie moves out of bounds
+*/
 Zombie.prototype.boundsCheck = function() {
 	
 	if (this.x <= leftBound) {
@@ -213,35 +193,26 @@ Zombie.prototype.boundsCheck = function() {
 		this.setSpawnPoint();
 		this.setSpawnTime();
 	}
-
-	/*
-	if (this.count <= 1) {
-		this.setNewCount();
-		this.x = 760;
-		this.y = 250;
-		this.speed = (-40 * sonic.level);
-		console.log("count thing");
-	}
-	*/
 };
 
 Zombie.prototype.setSpawnTime = function(dt) {
-
-	// multiply time by random number
-	this.timeMult =  Math.floor(Math.random() * (1000 - 1 + 1)) + 1;
-
 	// set spawnTime between 10 and 10000
 	this.spawnTime = Math.floor(Math.random() * (750 - 10 + 1)) + 10;
-	// return this.count;
 };
 
 Zombie.prototype.setSpawnPoint = function() {
 	this.spawnPoint = Math.floor(Math.random() * (750 - 10 + 1)) + 10;
 };
 
+/*
+	Place zombie at random new x-coordinate
+*/
 Zombie.prototype.newSpawnPoint = function() {
 	this.x = Math.floor(Math.random() * (1250 - 750 + 1)) + 750;
 };
+
+
+
 /*
 	NyanCat class creates the nyan cat objects that sonic collects
 	to gain points
@@ -272,11 +243,7 @@ NyanCat.prototype.render = function() {
 };
 
 NyanCat.prototype.boundsCheck = function() {
-	/*
-	if (this.x <== leftBound) {
-		this.x = 760;
-	}
-	*/
+
 };
 
 /*
