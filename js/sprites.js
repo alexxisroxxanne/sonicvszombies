@@ -1,5 +1,9 @@
 var sonicSprite,
 	soniceSpriteImg;
+
+var jumpingSprite,
+	jumpingSpriteImg;
+
 var Sprites = (function(global) {
 
 	/*
@@ -76,6 +80,7 @@ var Sprites = (function(global) {
 	}
 
 	sonicSpriteImg = new Image();
+	jumpingSpriteImg = new Image();
 
 	sonicSprite = sprite({
 		context: ctx,
@@ -86,10 +91,21 @@ var Sprites = (function(global) {
 		ticksPerFrame: 6
 	});
 
+	jumpingSprite = sprite({
+		context: ctx,
+		width: 920,
+		height: 117,
+		image: jumpingSpriteImg,
+		numberOfFrames: 4,
+		ticksPerFrame: 6
+	});
+
 	// start game loop as soon as sprite sheet is loaded
 	sonicSpriteImg.addEventListener("load", gameLoop);
 	sonicSpriteImg.src = "images/sonicrunningsheet.png";
 	console.log("Sprites file is opened");
 
+	// jumpingSpriteImg.addEventListener("keyup")
+	
 	// return sonicSpriteImg;
 }());
