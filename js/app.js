@@ -402,7 +402,7 @@ bkgdImgs.push(rock);
 
 
 // Listen for key presses and send input to handleInput()
-document.addEventListener("keyup", function(e) {
+document.addEventListener("keydown", function(e) {
 	var allowedKeys = {
 		13: "enter",
 		32: "space"
