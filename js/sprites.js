@@ -32,7 +32,7 @@ var Sprites = (function(global) {
 		obj.image = options.image;
 		obj.x = options.x || 30;
 		obj.y = options.y || 250;
-		obj.jumping = false;
+		obj.jumping = 1;
 
 		obj.update = function() {
 			tickCount += 1;
@@ -56,14 +56,20 @@ var Sprites = (function(global) {
 			// clear the canvas
 			// obj.context.clearRect(0, 0, obj.width, obj.height);
 			switch(obj.jumping) {
-				case false:
+				case 1:
 					obj.y = 250;
 				break;
-				case true:
+				case 2:
 					if (obj.y > 50)
 						obj.y -= 20;
 					else if (obj.y == 50)
 						obj.y += 20;
+				break;
+				case 3:
+					if (obj.y < 250)
+						obj.y += 20;
+					else
+						obj.y = 250;
 				break;
 			}
 
@@ -82,11 +88,11 @@ var Sprites = (function(global) {
 
 		obj.jump = function(key) {
 			if (key === "space" || key === "enter") {
-				obj.jumping = true;
+				obj.jumping = 2;
 
 				setTimeout(function() {
-					obj.jumping = false;
-				}, 1000);
+					obj.jumping = 3;
+				}, 750);
 			}
 
 			console.log("jumping");
