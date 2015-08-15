@@ -66,11 +66,11 @@ var Sprites = (function(global) {
 					if (obj.y > 50)
 						obj.y -= 20;
 					else if (obj.y == 50)
-						obj.y += 20;
+						obj.y = 50;
 				break;
 				case 3:
 					if (obj.y < 250) {
-						obj.y += 20;
+						obj.y += 10;
 						obj.image = jumpingSpriteImg;
 						obj.numberOfFrames = 9;
 					}
@@ -102,9 +102,9 @@ var Sprites = (function(global) {
 
 				setTimeout(function() {
 					obj.jumping = 3;
-				}, 750);
+				}, 1500);
 			}
-
+			
 			console.log("jumping");
 		};
 

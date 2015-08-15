@@ -33,7 +33,8 @@ function gameBegin(key) {
 // canvas bounds
 var rightBound = 760,
 	leftBound = 0;
-
+// first level
+var level = 1;
 
 
 
@@ -50,7 +51,7 @@ var Sonic = function() {
 	this.lives = 3;
 
 	// set initial level to 1
-	this.level = 1;
+	// this.level = 1;
 
 	this.jumpSpeed = 20;
 	// initialize sonic as alive
@@ -85,8 +86,10 @@ Sonic.prototype.handleInput = function(key) {
 		if (this.newGame)
 			this
 		*/
-	if (key === "space" || key === "enter")
+	if (key === "space" || key === "enter") {
 		sonicSprite.jump(key);
+		keyIsDown = true;
+	}
 };
 
 Sonic.prototype.loseLife = function() {
@@ -106,16 +109,6 @@ Sonic.prototype.loseLife = function() {
 
 Sonic.prototype.jump = function() {
 	
-	/*
-	var jumpImg = sonicSprite; //Resources.get("images/sonicstill.png");
-	var pat = ctx.createPattern(jumpImg, "no-repeat");
-
-	ctx.beginPath();
-	ctx.strokeStyle = pat;
-	ctx.moveTo(30, 250);
-	ctx.lineTo(30, 75);
-	ctx.stroke();
-	*/
 };
 
 /*
@@ -135,7 +128,7 @@ var Zombie = function() {
 	this.setSpeed();
 
 	// max number of zombies
-	this.maxNumber = 5 + sonic.level;
+	this.maxNumber = 5 + level;
 
 	// set random values to help with random spawn times
 	this.setRandom1();
@@ -220,14 +213,13 @@ Zombie.prototype.setSpeed = function() {
 	var randomMult = Math.floor(Math.random() * (20 - 1 + 1)) + 1;
 
 	// set random speed, with min being 41
-	this.speed = - (30 + randomMult + (10 * sonic.level));
+	this.speed = - (110 + randomMult + (10 * level));
 };
 
 /*
 	Set first random number - used for random spawn times
 */
 Zombie.prototype.setRandom1 = function() {
-	// set spawnTime between 10 and 10000
 	this.random1 = Math.floor(Math.random() * (750 - 10 + 1)) + 10;
 };
 
@@ -253,7 +245,7 @@ var NyanCat = function() {
 
 	// set x and y coordinates
 	this.setSpawnLocation();
-	this.y = 75;
+	this.y = 50;
 
 	// set cat speed
 	this.setSpeed();
@@ -301,7 +293,7 @@ NyanCat.prototype.setSpawnLocation = function() {
 	Set speed of cat based on sonic's level
 */
 NyanCat.prototype.setSpeed = function() {
-	this.speed = - (35 + (10 * sonic.level));
+	this.speed = - (35 + (10 * level));
 };
 
 
@@ -322,6 +314,8 @@ var BkgdImages = function(x, y, img, speed) {
 
 	this.setSpeed();
 	this.speed = speed * this.speedMult;
+
+	console.log("bkdg image");
 };
 
 /*
@@ -346,7 +340,7 @@ BkgdImages.prototype.render = function() {
 	Set speed of background images so sonic appears to be moving
 */
 BkgdImages.prototype.setSpeed = function() {
-	this.speedMult = - (20 + (10 * sonic.level));
+	this.speedMult = - (20 + (10 * level));
 };
 
 /*
@@ -364,26 +358,6 @@ BkgdImages.prototype.boundsCheck = function() {
 // gameBegin();
 
 
-
-// create new instance of sonic
-var sonic = new Sonic();
-console.log("sonic is instantiated");
-
-
-// Place zombie objects in array called zombies
-var zombies = [];
-var zombie = new Zombie();
-zombies.push(zombie);
-console.log(zombies.length);
-console.log(zombie.location);
-
-
-// Place nyancat objects in array called nyancats
-var nyancats = [];
-var cat = new NyanCat();
-nyancats.push(cat);
-
-
 // Place background images in array called bkgdImgs
 var bkgdImgs = [];
 var cactusSprite = "images/cactus.png",
@@ -399,17 +373,49 @@ bkgdImgs.push(cactus);
 var rock = new BkgdImages(515, 210, rockSprite, 1);
 bkgdImgs.push(rock);
 
+// Place zombie objects in array called zombies
+var zombies = [];
+var zombie = new Zombie();
+zombies.push(zombie);
+console.log(zombies.length);
+console.log(zombie.location);
+
+
+// Place nyancat objects in array called nyancats
+var nyancats = [];
+var cat = new NyanCat();
+nyancats.push(cat);
+
+// create new instance of sonic
+var sonic = new Sonic();
+console.log("sonic is instantiated");
 
 
 // Listen for key presses and send input to handleInput()
-document.addEventListener("keydown", function(e) {
+/*
+function keyInput(e) {
 	var allowedKeys = {
 		13: "enter",
 		32: "space"
 	};
 
-	// sonicSprite.jump(allowedKeys[e.keyCode]);
-	// gameBegin(allowedKeys[e.keyCode]);
+	sonic.handleInput(allowedKeys[e.keyCode]);
+}
+document.addEventListener("keydown", keyInput);
+document.addEventListener("keypress", keyInput);
+document.addEventListener("keyup", keyInput);
+*/
+var keyIsDown;
+
+document.addEventListener("keydown", function(e) {
+	var allowedKeys = {
+		13: "enter",
+		32: "space"
+	};
+	
+	// keyIsDown = true;
+
 	sonic.handleInput(allowedKeys[e.keyCode]);
 });
+
 

@@ -124,19 +124,20 @@ var Engine = (function(global) {
 		the render functions specific to each game entity
 	*/
 	function renderEntities() {
-		sonic.render();
-
-		zombies.forEach(function(zombie) {
-			zombie.render();
+		bkgdImgs.forEach(function(img) {
+			img.render();
 		});
 
 		nyancats.forEach(function(cat) {
 			cat.render();
 		});
 
-		bkgdImgs.forEach(function(img) {
-			img.render();
+		sonic.render();
+
+		zombies.forEach(function(zombie) {
+			zombie.render();
 		});
+
 	}
 
 	/*
@@ -155,26 +156,9 @@ var Engine = (function(global) {
 		"images/sky2.png",
 		"images/sky1.png",
 		"images/sand1.png",
-		// "images/sand2.png",
 		"images/sonicrunningsheet.png",
 		"images/sonicstill.png",
 		"images/sonicsprites.png",
-		/*
-		"images/sonicmoving1.png",
-		"images/sonicfast1.png",
-		"images/sonicfast2.png",
-		"images/sonicfast3.png",
-		"images/sonicfast4.png",
-		"images/sonicball1.png",
-		"images/sonicball2.png",
-		"images/sonicball3.png",
-		"images/sonicball4.png",
-		"images/sonicball5.png",
-		"images/sonicball6.png",
-		"images/sonicball7.png",
-		"images/sonicball8.png",
-		"images/sonicball9.png",
-		*/
 		"images/sonicjumping.png",
 		"images/nyancat.png",
 		"images/zombie.png",
