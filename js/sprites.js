@@ -30,6 +30,7 @@ var Sprites = (function(global) {
 		obj.width = options.width;
 		obj.height = options.height;
 		obj.image = options.image;
+		// obj.image = options.image || sonicSpriteImg;
 		obj.x = options.x || 30;
 		obj.y = options.y || 250;
 		obj.jumping = 1;
@@ -58,18 +59,24 @@ var Sprites = (function(global) {
 			switch(obj.jumping) {
 				case 1:
 					obj.y = 250;
+					obj.image = sonicSpriteImg;
 				break;
 				case 2:
+					obj.image = jumpingSpriteImg;
 					if (obj.y > 50)
 						obj.y -= 20;
 					else if (obj.y == 50)
 						obj.y += 20;
 				break;
 				case 3:
-					if (obj.y < 250)
+					if (obj.y < 250) {
 						obj.y += 20;
-					else
+						obj.image = jumpingSpriteImg;
+					}
+					else {
 						obj.y = 250;
+						obj.image  = sonicSpriteImg;
+					}
 				break;
 			}
 
@@ -110,6 +117,7 @@ var Sprites = (function(global) {
 	}
 
 	sonicSpriteImg = new Image();
+	jumpingSpriteImg = new Image();
 
 	sonicSprite = sprite({
 		context: ctx,
@@ -123,6 +131,8 @@ var Sprites = (function(global) {
 	// start game loop as soon as sprite sheet is loaded
 	sonicSpriteImg.addEventListener("load", gameLoop);
 	sonicSpriteImg.src = "images/sonicrunningsheet.png";
+	// jumpingSpriteImg.addEventListener("load", jump);
+	jumpingSpriteImg.src = "images/sonicjumping.png";
 	console.log("Sprites file is opened");
 
 }());
