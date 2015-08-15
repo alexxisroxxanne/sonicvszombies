@@ -86,10 +86,8 @@ Sonic.prototype.handleInput = function(key) {
 		if (this.newGame)
 			this
 		*/
-	if (key === "space" || key === "enter") {
+	if (key === "space" || key === "enter")
 		sonicSprite.jump(key);
-		keyIsDown = true;
-	}
 };
 
 Sonic.prototype.loseLife = function() {
@@ -128,7 +126,7 @@ var Zombie = function() {
 	this.setSpeed();
 
 	// max number of zombies
-	this.maxNumber = 5 + level;
+	this.maxNumber = 2 + level;
 
 	// set random values to help with random spawn times
 	this.setRandom1();
@@ -213,7 +211,7 @@ Zombie.prototype.setSpeed = function() {
 	var randomMult = Math.floor(Math.random() * (20 - 1 + 1)) + 1;
 
 	// set random speed, with min being 41
-	this.speed = - (110 + randomMult + (10 * level));
+	this.speed = - (200 + randomMult + (10 * level));
 };
 
 /*
@@ -405,9 +403,9 @@ document.addEventListener("keydown", keyInput);
 document.addEventListener("keypress", keyInput);
 document.addEventListener("keyup", keyInput);
 */
-var keyIsDown;
 
-document.addEventListener("keydown", function(e) {
+
+document.addEventListener("keyup", function(e) {
 	var allowedKeys = {
 		13: "enter",
 		32: "space"
