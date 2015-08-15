@@ -30,7 +30,6 @@ var Sprites = (function(global) {
 		obj.width = options.width;
 		obj.height = options.height;
 		obj.image = options.image;
-		// obj.image = options.image || sonicSpriteImg;
 		obj.x = options.x || 30;
 		obj.y = options.y || 250;
 		obj.jumping = 1;
@@ -54,15 +53,16 @@ var Sprites = (function(global) {
 		};
 
 		obj.render = function() {
-			// clear the canvas
-			// obj.context.clearRect(0, 0, obj.width, obj.height);
+			// render different sprites if player is jumping or not
 			switch(obj.jumping) {
 				case 1:
 					obj.y = 250;
 					obj.image = sonicSpriteImg;
+					obj.numberOfFrames = 4;
 				break;
 				case 2:
 					obj.image = jumpingSpriteImg;
+					obj.numberOfFrames = 9;
 					if (obj.y > 50)
 						obj.y -= 20;
 					else if (obj.y == 50)
@@ -72,10 +72,12 @@ var Sprites = (function(global) {
 					if (obj.y < 250) {
 						obj.y += 20;
 						obj.image = jumpingSpriteImg;
+						obj.numberOfFrames = 9;
 					}
 					else {
 						obj.y = 250;
 						obj.image  = sonicSpriteImg;
+						obj.numberOfFrames = 4;
 					}
 				break;
 			}
@@ -93,6 +95,7 @@ var Sprites = (function(global) {
 				obj.height);
 		};
 
+		// toggle jumping state when key is pressed
 		obj.jump = function(key) {
 			if (key === "space" || key === "enter") {
 				obj.jumping = 2;
@@ -103,22 +106,17 @@ var Sprites = (function(global) {
 			}
 
 			console.log("jumping");
-
-			// obj.resetY();
 		};
 
-		obj.resetY = function() {
-			obj.jumping = false;
-		};
-				
-		
 
 		return obj;
 	}
 
-	sonicSpriteImg = new Image();
-	jumpingSpriteImg = new Image();
 
+	sonicSpriteImg = new Image();
+	jumpingSpriteImg = new Image(); // sprite for jumping
+
+	// create sonicSprite
 	sonicSprite = sprite({
 		context: ctx,
 		width: 408.8,
@@ -131,7 +129,6 @@ var Sprites = (function(global) {
 	// start game loop as soon as sprite sheet is loaded
 	sonicSpriteImg.addEventListener("load", gameLoop);
 	sonicSpriteImg.src = "images/sonicrunningsheet.png";
-	// jumpingSpriteImg.addEventListener("load", jump);
 	jumpingSpriteImg.src = "images/sonicjumping.png";
 	console.log("Sprites file is opened");
 
