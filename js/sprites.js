@@ -38,6 +38,7 @@ var Sprites = (function(global) {
 		obj.image = options.image;
 		obj.x = options.x || 30;
 		obj.y = options.y || 250;
+		obj.jumping = false;
 
 		obj.update = function() {
 			tickCount += 1;
@@ -60,6 +61,14 @@ var Sprites = (function(global) {
 		obj.render = function() {
 			// clear the canvas
 			// obj.context.clearRect(0, 0, obj.width, obj.height);
+			switch(obj.jumping) {
+				case false:
+					obj.y = 250;
+				break;
+				case true:
+					obj.y = 50;
+				break;
+			}
 
 			// draw animation
 			obj.context.drawImage(
@@ -68,19 +77,44 @@ var Sprites = (function(global) {
 				0,
 				obj.width / numberOfFrames,
 				obj.height,
-				obj.x,
+				30,
 				obj.y,
 				obj.width / numberOfFrames,
 				obj.height);
 		};
-		
+
+		obj.jump = function(key) {
+			if (key === "space" || key === "enter") {
+
+				//var jumpImg = obj.image;
+				// var pat = obj.ctx.createPattern(jumpImg, "no-repeat");
+
+				setTimeout(function() {
+					/*
+					obj.context.beginPath();
+					obj.context.fillStyle = pat;
+					obj.context.moveTo(30, 250);
+					obj.context.lineTo(30, 75);
+					// ctx.lineTo(30, 250);
+					obj.context.fill();
+					
+					//this.speed = 70;
+					//this.y = this.y + this.speed * dt;
+					*/
+					obj.jumping = true;
+					
+				}, 1500);
+			}
+
+			console.log("jumping");
+		};
+				
 		// obj.render();
 
 		return obj;
 	}
 
 	sonicSpriteImg = new Image();
-	jumpingSpriteImg = new Image();
 
 	sonicSprite = sprite({
 		context: ctx,
@@ -90,22 +124,32 @@ var Sprites = (function(global) {
 		numberOfFrames: 4,
 		ticksPerFrame: 6
 	});
-
-	jumpingSprite = sprite({
-		context: ctx,
-		width: 920,
-		height: 117,
-		image: jumpingSpriteImg,
-		numberOfFrames: 4,
-		ticksPerFrame: 6
-	});
-
+	
 	// start game loop as soon as sprite sheet is loaded
 	sonicSpriteImg.addEventListener("load", gameLoop);
 	sonicSpriteImg.src = "images/sonicrunningsheet.png";
 	console.log("Sprites file is opened");
+	/*
+	jumpingSpriteImg = new Image();
 
-	// jumpingSpriteImg.addEventListener("keyup")
-	
-	// return sonicSpriteImg;
+	jumpingSprite = sprite({
+			context: ctx,
+			width: 920,
+			height: 117,
+			image: jumpingSpriteImg,
+			numberOfFrames: 9,
+			ticksPerFrame: 6
+	});
+
+	jumpingSpriteImg.src = "images/sonicjumping.png";
+	*
+	sonicSprite.addEventListener("keyup", function(e) {
+		var allowedKeys = {
+			13: "enter",
+			32: "space"
+		};
+
+		sonicSprite.jump(allowedKeys[e.keyCode]);
+	});	
+	*/
 }());

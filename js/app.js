@@ -85,8 +85,8 @@ Sonic.prototype.handleInput = function(key) {
 		if (this.newGame)
 			this
 		*/
-	if (key === "space")
-		this.jump();
+	if (key === "space" || key === "enter")
+		sonicSprite.jump(key);
 };
 
 Sonic.prototype.loseLife = function() {
@@ -104,33 +104,18 @@ Sonic.prototype.loseLife = function() {
 		reset();
 };
 
-Sonic.prototype.jump = function(dt) {
-	/*
-	// set dt from 10 to 19
-	var mult = dt * 1000.0;
-	// add up time
-	var time += mult;
-
-	if (time < 300 && this.y > 75)
-		this.y = this.y + this.jumpSpeed * dt;
-	else if (time >= 300 || this.y <= 75)
-		this.y = - (this.y + this.jumpSpeed * dt);
-	else
-		this.y = 250;
-	*/
-	/*
-	if (this.y > 75)
-		this.y = this.y + this.jumpSpeed * dt;
+Sonic.prototype.jump = function() {
 	
-	this.y = 75;
+	/*
+	var jumpImg = sonicSprite; //Resources.get("images/sonicstill.png");
+	var pat = ctx.createPattern(jumpImg, "no-repeat");
 
-	if (this.y = 75)
-		this.y = - (this.y + this.jumpSpeed * dt);
-
-	this.y = 250;
+	ctx.beginPath();
+	ctx.strokeStyle = pat;
+	ctx.moveTo(30, 250);
+	ctx.lineTo(30, 75);
+	ctx.stroke();
 	*/
-
-	this.y == 75;
 };
 
 /*
@@ -423,6 +408,8 @@ document.addEventListener("keyup", function(e) {
 		32: "space"
 	};
 
+	// sonicSprite.jump(allowedKeys[e.keyCode]);
 	// gameBegin(allowedKeys[e.keyCode]);
 	sonic.handleInput(allowedKeys[e.keyCode]);
 });
+
