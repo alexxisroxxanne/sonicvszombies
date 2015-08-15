@@ -390,7 +390,7 @@ var cactusSprite = "images/cactus.png",
 	rockSprite = "images/rocks.png",
 	cloudSprite = "images/cloud.png",
 	sunSprite = "images/sun1.png";
-var sunImg = new BkgdImages(20, 10, sunSprite, 0);
+var sunImg = new BkgdImages(570, 10, sunSprite, 0);
 bkgdImgs.push(sunImg);
 var cloudImg = new BkgdImages(380, 50, cloudSprite, 0.5);
 bkgdImgs.push(cloudImg);
