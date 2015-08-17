@@ -123,145 +123,6 @@ Sonic.prototype.loseLife = function() {
 
 
 /*
-	Zombie class creates the zombie/obstacle objects that sonic must
-	avoid
-	Parameters -
-		x and y are initial zombie coordinates
-		speed is how fast game is moving
-*/
-var Zombie = function() {
-	// set zombie image/sprite
-	this.sprite = "images/zombie.png";
-
-	// set zombie initial location and speed
-	this.setSpawnLocation(); // sets random x-coordinate off-screen
-	this.y = 250; // constant
-	this.setSpeed();
-
-	// max number of zombies
-	this.maxNumber = 2 + level;
-
-	// set random values to help with random spawn times
-	this.setRandom1();
-	this.setRandom2();
-
-	// this.count = 1;
-	// for collision detection
-	/*var yDiffZom,
-		xDiffZom;
-	*/
-
-	console.log("zombie loaded");
-};
-
-/*
-	Draw the zombie/obstacle on the screen using the canvas' context
-*/
-Zombie.prototype.render = function() {
-	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
-/*
-	Update zombie location/position
-	Parameters -
-		dt, time delta between loops
-		collisionCheck - function that returns true if sonic and zombie
-		collide
-*/
-Zombie.prototype.update = function(dt) {
-	// multiply movement by dt to ensure game runs at same speed across
-	// different browsers
-	this.x = this.x + this.speed * dt;
-
-	// if number of zombies is less than max number of zombies...
-	if (zombies.length < this.maxNumber) {
-
-		// and if two random numbers equal each other
-		if (this.random1 == this.random2) {
-			// spawn a new zombie
-			zombies.push(new Zombie());
-
-		// otherwise...
-		} else {
-			// change first random number
-			this.setRandom1();
-		}
-	}
-	
-	// check if zombies are still in bounds
-	this.boundsCheck();
-
-	this.collisionCheck();
-};
-
-/*
-	Check for collisions between zombie and sonic
-	Return true if collide; false if have not collided
-*/
-Zombie.prototype.collisionCheck = function() {
-	/* if (this.x === sonic.x && this.y === sonic.y)
-		return true;
-	else
-		return false;
-	*/
-	var yDiffZom = this.y - sonic.y;
-	var xDiffZom = this.x - sonic.x;
-
-	// if y coordinates are within pixel range
-	if (yDiffZom > -30 && yDiffZom < 30) {
-		// and if x coordinates are within pixel range
-		if (xDiffZom > -30 && xDiffZom < 30) {
-			sonic.loseLife();
-			reset();
-		}
-	}
-};
-
-/*
-	Reset zombie to random location once zombie moves out of bounds
-*/
-Zombie.prototype.boundsCheck = function() {
-	
-	if (this.x <= leftBound) {
-		this.setSpawnLocation();
-	}
-};
-
-/*
-	Place zombie at random new x-coordinate
-*/
-Zombie.prototype.setSpawnLocation = function() {
-	this.x = Math.floor(Math.random() * (1250 - 750 + 1)) + 750;
-};
-
-/*
-	Set zombie speed
-*/
-Zombie.prototype.setSpeed = function() {
-	// get a random number between 1 and 20
-	var randomMult = Math.floor(Math.random() * (20 - 1 + 1)) + 1;
-
-	// set random speed, with min being 41
-	this.speed = - (200 + randomMult + (10 * level));
-};
-
-/*
-	Set first random number - used for random spawn times
-*/
-Zombie.prototype.setRandom1 = function() {
-	this.random1 = Math.floor(Math.random() * (750 - 10 + 1)) + 10;
-};
-
-/*
-	Set second random number - used for random spawn times
-*/
-Zombie.prototype.setRandom2 = function() {
-	this.random2 = Math.floor(Math.random() * (750 - 10 + 1)) + 10;
-};
-
-
-
-/*
 	NyanCat class creates the nyan cat objects that sonic collects
 	to gain points
 	Parameters - 
@@ -379,6 +240,160 @@ NyanCat.prototype.setRandom2 = function() {
 	this.random2 = Math.floor(Math.random() * (750 - 10 + 1)) + 10;
 };
 
+NyanCat.prototype.levelReset = function() {
+	this.setSpawnLocation();
+};
+
+
+
+/*
+	Zombie class creates the zombie/obstacle objects that sonic must
+	avoid
+	Parameters -
+		x and y are initial zombie coordinates
+		speed is how fast game is moving
+*/
+var Zombie = function() {
+	// set zombie image/sprite
+	this.sprite = "images/zombie.png";
+
+	// set zombie initial location and speed
+	this.setSpawnLocation(); // sets random x-coordinate off-screen
+	this.y = 250; // constant
+	this.setSpeed();
+
+	// max number of zombies
+	this.maxNumber = 2 + level;
+
+	// set random values to help with random spawn times
+	this.setRandom1();
+	this.setRandom2();
+
+	// this.count = 1;
+	// for collision detection
+	/*var yDiffZom,
+		xDiffZom;
+	*/
+
+	console.log("zombie loaded");
+};
+
+/*
+	Draw the zombie/obstacle on the screen using the canvas' context
+*/
+Zombie.prototype.render = function() {
+	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+/*
+	Update zombie location/position
+	Parameters -
+		dt, time delta between loops
+		collisionCheck - function that returns true if sonic and zombie
+		collide
+*/
+Zombie.prototype.update = function(dt) {
+	// multiply movement by dt to ensure game runs at same speed across
+	// different browsers
+	this.x = this.x + this.speed * dt;
+
+	// if number of zombies is less than max number of zombies...
+	if (zombies.length < this.maxNumber) {
+
+		// and if two random numbers equal each other
+		if (this.random1 == this.random2) {
+			// spawn a new zombie
+			zombies.push(new Zombie());
+
+		// otherwise...
+		} else {
+			// change first random number
+			this.setRandom1();
+		}
+	}
+	
+	// check if zombies are still in bounds
+	this.boundsCheck();
+
+	this.collisionCheck();
+};
+
+/*
+	Check for collisions between zombie and sonic
+	Return true if collide; false if have not collided
+*/
+Zombie.prototype.collisionCheck = function() {
+	/* if (this.x === sonic.x && this.y === sonic.y)
+		return true;
+	else
+		return false;
+	*/
+	var yDiffZom = this.y - sonic.y;
+	var xDiffZom = this.x - sonic.x;
+
+	// if y coordinates are within pixel range
+	if (yDiffZom > -30 && yDiffZom < 30) {
+		// and if x coordinates are within pixel range
+		if (xDiffZom > -30 && xDiffZom < 30) {
+			sonic.loseLife();
+			// reset();
+			zombies.forEach(function(zombie) {
+				zombie.levelReset();
+			});
+			nyancats.forEach(function(cat) {
+				cat.levelReset();
+			});
+		}
+	}
+};
+
+/*
+	Reset zombie to random location once zombie moves out of bounds
+*/
+Zombie.prototype.boundsCheck = function() {
+	
+	if (this.x <= leftBound) {
+		this.setSpawnLocation();
+	}
+};
+
+/*
+	Place zombie at random new x-coordinate
+*/
+Zombie.prototype.setSpawnLocation = function() {
+	this.x = Math.floor(Math.random() * (1250 - 750 + 1)) + 750;
+};
+
+/*
+	Set zombie speed
+*/
+Zombie.prototype.setSpeed = function() {
+	// get a random number between 1 and 20
+	var randomMult = Math.floor(Math.random() * (20 - 1 + 1)) + 1;
+
+	// set random speed, with min being 41
+	this.speed = - (200 + randomMult + (10 * level));
+};
+
+/*
+	Set first random number - used for random spawn times
+*/
+Zombie.prototype.setRandom1 = function() {
+	this.random1 = Math.floor(Math.random() * (750 - 10 + 1)) + 10;
+};
+
+/*
+	Set second random number - used for random spawn times
+*/
+Zombie.prototype.setRandom2 = function() {
+	this.random2 = Math.floor(Math.random() * (750 - 10 + 1)) + 10;
+};
+
+Zombie.prototype.levelReset = function() {
+	this.setSpawnLocation();
+};
+
+
 
 /*
 	BkgdImages class creates the background images that create
@@ -455,6 +470,11 @@ bkgdImgs.push(cactus);
 var rock = new BkgdImages(515, 210, rockSprite, 1);
 bkgdImgs.push(rock);
 
+// Place nyancat objects in array called nyancats
+var nyancats = [];
+var cat = new NyanCat();
+nyancats.push(cat);
+
 // Place zombie objects in array called zombies
 var zombies = [];
 var zombie = new Zombie();
@@ -462,11 +482,6 @@ zombies.push(zombie);
 console.log(zombies.length);
 console.log(zombie.location);
 
-
-// Place nyancat objects in array called nyancats
-var nyancats = [];
-var cat = new NyanCat();
-nyancats.push(cat);
 
 // create new instance of sonic
 var sonic = new Sonic();
