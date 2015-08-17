@@ -206,9 +206,9 @@ NyanCat.prototype.collisionCheck = function() {
 	var xDiffCat = this.x - sonic.x;
 
 	// if y coordinates are within pixel range
-	if (yDiffCat > -60 && yDiffCat < 60) {
+	if (yDiffCat > -30 && yDiffCat < 30) {
 		// and if x coordinates are within pixel range
-		if (xDiffCat > -100 && xDiffCat < 100)
+		if (xDiffCat > -40 && xDiffCat < 40)
 			sonic.increaseScore();
 	}
 };
@@ -269,12 +269,6 @@ var Zombie = function() {
 	this.setRandom1();
 	this.setRandom2();
 
-	// this.count = 1;
-	// for collision detection
-	/*var yDiffZom,
-		xDiffZom;
-	*/
-
 	console.log("zombie loaded");
 };
 
@@ -323,18 +317,14 @@ Zombie.prototype.update = function(dt) {
 	Return true if collide; false if have not collided
 */
 Zombie.prototype.collisionCheck = function() {
-	/* if (this.x === sonic.x && this.y === sonic.y)
-		return true;
-	else
-		return false;
-	*/
-	var yDiffZom = this.y - sonic.y;
+	// find difference between x and y coordinates of both sprites
+	var yDiffZom = this.y - sonicSprite.y; // use sonicSprite for jumps
 	var xDiffZom = this.x - sonic.x;
 
 	// if y coordinates are within pixel range
-	if (yDiffZom > -30 && yDiffZom < 30) {
+	if (yDiffZom > -15 && yDiffZom < 15) {
 		// and if x coordinates are within pixel range
-		if (xDiffZom > -30 && xDiffZom < 30) {
+		if (xDiffZom > -20 && xDiffZom < 20) {
 			sonic.loseLife();
 			// reset();
 			zombies.forEach(function(zombie) {
