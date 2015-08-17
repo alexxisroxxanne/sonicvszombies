@@ -57,9 +57,6 @@ var Sonic = function() {
 	this.jumpSpeed = 20;
 	// initialize sonic as alive
 	// this.alive === false;
-
-	// for increasing level
-	var scoreDiv;
 };
 
 /*
@@ -92,7 +89,8 @@ Sonic.prototype.handleInput = function(key) {
 Sonic.prototype.increaseScore = function() {
 	this.score += 10;
 
-	scoreDiv = this.score % 100;
+	// for increasing level
+	var scoreDiv = this.score % 100;
 
 	// if score is above 0 and is a multiple of 100
 	if (this.score > 0 && scoreDiv == 0) {
@@ -202,14 +200,17 @@ NyanCat.prototype.boundsCheck = function() {
 	Increase points if sonic and cat collide
 */
 NyanCat.prototype.collisionCheck = function() {
-	var yDiffCat = this.y - sonic.y;
+	// find x and y coordinate differences between sprites
+	var yDiffCat = this.y - sonicSprite.y;
 	var xDiffCat = this.x - sonic.x;
 
 	// if y coordinates are within pixel range
-	if (yDiffCat > -30 && yDiffCat < 30) {
+	if (yDiffCat > -15 && yDiffCat < 15) {
 		// and if x coordinates are within pixel range
-		if (xDiffCat > -40 && xDiffCat < 40)
+		if (xDiffCat > -30 && xDiffCat < 30) {
 			sonic.increaseScore();
+			this.setSpawnLocation();
+		}
 	}
 };
 /*
