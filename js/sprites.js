@@ -102,13 +102,12 @@ var Sprites = (function(global) {
 
 				setTimeout(function() {
 					obj.jumping = 3;
-				}, 1000);
+				}, 800);
 			}
 			
 			console.log("jumping");
 		};
-
-
+		
 		return obj;
 	}
 

@@ -36,8 +36,6 @@ var rightBound = 760,
 // first level
 var level = 1;
 
-
-
 /*
 	Sonic class creates the player's character, Sonic the Hedgehog
 */
@@ -50,12 +48,18 @@ var Sonic = function() {
 	// set initial life count to 3
 	this.lives = 3;
 
+	this.x = sonicSprite.x;
+	this.y = sonicSprite.y;
+
 	// set initial level to 1
 	// this.level = 1;
 
 	this.jumpSpeed = 20;
 	// initialize sonic as alive
 	// this.alive === false;
+
+	// for increasing level
+	var scoreDiv;
 };
 
 /*
@@ -81,33 +85,42 @@ Sonic.prototype.render = function() {
 	Parameter - key, the key pressed by the player
 */
 Sonic.prototype.handleInput = function(key) {
-	/*
-	if (key === "enter")
-		if (this.newGame)
-			this
-		*/
 	if (key === "space" || key === "enter")
 		sonicSprite.jump(key);
 };
 
+Sonic.prototype.increaseScore = function() {
+	this.score += 10;
+
+	scoreDiv = this.score % 100;
+
+	// if score is above 0 and is a multiple of 100
+	if (this.score > 0 && scoreDiv == 0) {
+		// level up
+		level++;
+
+		// increase lives by 1 if under max
+		if (this.lives < 3)
+			this.lives++;
+	}
+};
+
+/*
+	Reset score and decrease lives if lost a life
+*/
 Sonic.prototype.loseLife = function() {
 	// reset score
 	this.score = 0;
-
-	this.x = 0;
-	this.y = 50;
 
 	// decrease life count
 	this.lives--;
 
 	// game over when no more lives
-	if (this.lives === 0)
-		reset();
+	//if (this.lives === 0)
+		//reset();
 };
 
-Sonic.prototype.jump = function() {
-	
-};
+
 
 /*
 	Zombie class creates the zombie/obstacle objects that sonic must
@@ -133,6 +146,10 @@ var Zombie = function() {
 	this.setRandom2();
 
 	// this.count = 1;
+	// for collision detection
+	/*var yDiffZom,
+		xDiffZom;
+	*/
 
 	console.log("zombie loaded");
 };
@@ -173,6 +190,8 @@ Zombie.prototype.update = function(dt) {
 	
 	// check if zombies are still in bounds
 	this.boundsCheck();
+
+	this.collisionCheck();
 };
 
 /*
@@ -180,10 +199,22 @@ Zombie.prototype.update = function(dt) {
 	Return true if collide; false if have not collided
 */
 Zombie.prototype.collisionCheck = function() {
-	if (this.x === sonic.x && this.y === sonic.y)
+	/* if (this.x === sonic.x && this.y === sonic.y)
 		return true;
 	else
 		return false;
+	*/
+	var yDiffZom = this.y - sonic.y;
+	var xDiffZom = this.x - sonic.x;
+
+	// if y coordinates are within pixel range
+	if (yDiffZom > -30 && yDiffZom < 30) {
+		// and if x coordinates are within pixel range
+		if (xDiffZom > -30 && xDiffZom < 30) {
+			sonic.loseLife();
+			reset();
+		}
+	}
 };
 
 /*
@@ -248,6 +279,14 @@ var NyanCat = function() {
 	// set cat speed
 	this.setSpeed();
 
+	this.maxNumber = 1 + level;
+
+	// for collision detection
+	/*
+	var yDiffCat,
+		xDiffCat;
+		*/
+
 	console.log("im a cat");
 };
 
@@ -255,13 +294,31 @@ var NyanCat = function() {
 	Update nyancat location/position
 	Parameters -
 		dt, time delta between loops
-		collisionCheck - function that returns true if sonic and zombie
+		collisionCheck - function that returns true if sonic and cat
 		collide
 */
 NyanCat.prototype.update = function(dt) {
 	this.x = this.x + this.speed * dt;
 
 	this.boundsCheck();
+
+	// if number of cats is less than max number of cats...
+	if (nyancats.length < this.maxNumber) {
+
+		// and if two random numbers equal each other
+		if (this.random1 == this.random2) {
+			// spawn a new cat
+			nyancats.push(new NyanCat());
+
+		// otherwise...
+		} else {
+			// change first random number
+			this.setRandom1();
+		}
+	}
+
+	this.collisionCheck();
+	
 };
 
 /*
@@ -281,6 +338,20 @@ NyanCat.prototype.boundsCheck = function() {
 };
 
 /*
+	Increase points if sonic and cat collide
+*/
+NyanCat.prototype.collisionCheck = function() {
+	var yDiffCat = this.y - sonic.y;
+	var xDiffCat = this.x - sonic.x;
+
+	// if y coordinates are within pixel range
+	if (yDiffCat > -60 && yDiffCat < 60) {
+		// and if x coordinates are within pixel range
+		if (xDiffCat > -100 && xDiffCat < 100)
+			sonic.increaseScore();
+	}
+};
+/*
 	Set random spawn location out of right bounds
 */
 NyanCat.prototype.setSpawnLocation = function() {
@@ -291,9 +362,22 @@ NyanCat.prototype.setSpawnLocation = function() {
 	Set speed of cat based on sonic's level
 */
 NyanCat.prototype.setSpeed = function() {
-	this.speed = - (35 + (10 * level));
+	this.speed = - (100 + (10 * level));
 };
 
+/*
+	Set first random number - used for random spawn times
+*/
+NyanCat.prototype.setRandom1 = function() {
+	this.random1 = Math.floor(Math.random() * (750 - 10 + 1)) + 10;
+};
+
+/*
+	Set second random number - used for random spawn times
+*/
+NyanCat.prototype.setRandom2 = function() {
+	this.random2 = Math.floor(Math.random() * (750 - 10 + 1)) + 10;
+};
 
 
 /*
@@ -388,31 +472,18 @@ nyancats.push(cat);
 var sonic = new Sonic();
 console.log("sonic is instantiated");
 
-
-// Listen for key presses and send input to handleInput()
-/*
-function keyInput(e) {
-	var allowedKeys = {
-		13: "enter",
-		32: "space"
-	};
-
-	sonic.handleInput(allowedKeys[e.keyCode]);
+function reset() {
+	if (sonic.lives > 0) {
+		zombies.slice(0);
+		nyancats.slice(0);
+	}
 }
-document.addEventListener("keydown", keyInput);
-document.addEventListener("keypress", keyInput);
-document.addEventListener("keyup", keyInput);
-*/
-
-
-document.addEventListener("keyup", function(e) {
+// Listen for key presses and send input to handleInput()
+document.addEventListener("keydown", function(e) {
 	var allowedKeys = {
 		13: "enter",
 		32: "space"
 	};
-	
-	// keyIsDown = true;
-
 	sonic.handleInput(allowedKeys[e.keyCode]);
 });
 

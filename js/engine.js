@@ -101,7 +101,6 @@ var Engine = (function(global) {
 			"images/sky2.png", // top row is second level of sky
 			"images/sky1.png", // first level of sky
 			"images/sand1.png"]; // top level of sand
-			// "images/sand2.png"] // bottom level of sand
 		var numRows = 3,
 			numCols = 5,
 			row, col;
@@ -132,11 +131,12 @@ var Engine = (function(global) {
 			cat.render();
 		});
 
-		sonic.render();
-
 		zombies.forEach(function(zombie) {
 			zombie.render();
 		});
+
+		sonic.render();
+
 
 	}
 
@@ -146,6 +146,8 @@ var Engine = (function(global) {
 	function reset() {
 		// display final score
 		// to play again, press enter
+		// zombies.slice(0);
+		// nyancats.slice(0);
 	}
 
 	/*
