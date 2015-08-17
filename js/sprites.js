@@ -1,5 +1,7 @@
+// "use strict";
+
 var sonicSprite,
-	soniceSpriteImg;
+	sonicSpriteImg;
 
 var jumpingSprite,
 	jumpingSpriteImg;

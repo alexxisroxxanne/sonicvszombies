@@ -108,7 +108,11 @@ Sonic.prototype.increaseScore = function() {
 */
 Sonic.prototype.loseLife = function() {
 	// reset score
-	this.score = 0;
+	var scoreDiv = this.score % 100;
+
+	if (this.score > 100) {
+		this.score = this.score - scoreDiv;
+	}
 
 	// decrease life count
 	this.lives--;
@@ -477,6 +481,15 @@ console.log(zombie.location);
 // create new instance of sonic
 var sonic = new Sonic();
 console.log("sonic is instantiated");
+
+function keepScore() {
+	var scoreString = "Score: " + sonic.score.toString();
+	var levelString = " | Level: " + level.toString();
+	var livesString = " | Lives: " + sonic.lives.toString();
+    document.querySelector("#score").innerHTML = scoreString +
+    	levelString + livesString;
+}
+
 
 function reset() {
 	if (sonic.lives > 0) {

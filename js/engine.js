@@ -50,6 +50,8 @@ var Engine = (function(global) {
 		// use browser's requestAnimationFrame function to call main
 		// again when browswer can draw another frame
 		win.requestAnimationFrame(main);
+
+		keepScore();
 	};
 
 	/*
@@ -115,7 +117,11 @@ var Engine = (function(global) {
 			}
 		}
 
-		renderEntities();	
+		if (sonic.lives > 0)
+			renderEntities();
+		else {
+			reset();
+		}
 	}
 
 	/*
@@ -146,8 +152,9 @@ var Engine = (function(global) {
 	function reset() {
 		// display final score
 		// to play again, press enter
-		// zombies.slice(0);
-		// nyancats.slice(0);
+		sonic.lives = 3;
+		level = 1;
+		sonic.score = 0;
 	}
 
 	/*
