@@ -297,18 +297,21 @@ Zombie.prototype.update = function(dt) {
 	this.x = this.x + this.speed * dt;
 
 	// if number of zombies is less than max number of zombies...
+	// (and game isn't paused)
+
 	if (zombies.length < this.maxNumber) {
+		//if (this.speed > 0) {
+			// and if two random numbers equal each other
+			if (this.random1 == this.random2) {
+				// spawn a new zombie
+				zombies.push(new Zombie());
 
-		// and if two random numbers equal each other
-		if (this.random1 == this.random2) {
-			// spawn a new zombie
-			zombies.push(new Zombie());
-
-		// otherwise...
-		} else {
-			// change first random number
-			this.setRandom1();
-		}
+			// otherwise...
+			} else {
+				// change first random number
+				this.setRandom1();
+			}
+		//}
 	}
 	
 	// check if zombies are still in bounds
@@ -368,6 +371,7 @@ Zombie.prototype.setSpeed = function() {
 
 	// set random speed, with min being 41
 	this.speed = - (200 + randomMult + (10 * level));
+	return this.speed;
 };
 
 /*
@@ -446,10 +450,6 @@ BkgdImages.prototype.boundsCheck = function() {
 
 
 
-// call gameBegin to prompt user to start game
-// gameBegin();
-
-
 // Place background images in array called bkgdImgs
 var bkgdImgs = [];
 var cactusSprite = "images/cactus.png",
@@ -490,13 +490,38 @@ function keepScore() {
     	levelString + livesString;
 }
 
-
-function reset() {
-	if (sonic.lives > 0) {
-		zombies.slice(0);
-		nyancats.slice(0);
+BkgdImages.prototype.pauseMotion = function(key) {
+	if (key === "p") {
+		this.speed = 0;
 	}
-}
+	if (key === "up" && this.speed == 0) {
+		var speed;
+		if (this.sprite == sunSprite)
+			speed = 0;
+		else if (this.sprite == cloudSprite)
+			speed = 0.5;
+		else if (this.sprite == cactusSprite || this.sprite == rockSprite)
+			speed = 1;
+
+		this.setSpeed();
+
+		this.speed = speed * this.speedMult;
+	}
+};
+NyanCat.prototype.pauseMotion = function(key) {
+	if (key === "p")
+		this.speed = 0;
+	else if (key === "up" && this.speed == 0)
+		this.setSpeed();
+};
+Zombie.prototype.pauseMotion = function(key) {
+	if (key === "p")
+		this.speed = 0;
+	else if (key === "up" && this.speed == 0)
+		this.setSpeed();
+};
+
+	
 // Listen for key presses and send input to handleInput()
 document.addEventListener("keydown", function(e) {
 	var allowedKeys = {
@@ -506,4 +531,21 @@ document.addEventListener("keydown", function(e) {
 	sonic.handleInput(allowedKeys[e.keyCode]);
 });
 
+// Listen for pause and un-pause for moving elements
+document.addEventListener("keyup", function(e) {
+	var allowedKeys = {
+		80: "p",
+		38: "up"
+	};
+
+	nyancats.forEach(function(cat) {
+		cat.pauseMotion(allowedKeys[e.keyCode]);
+	});
+	zombies.forEach(function(zombie) {
+		zombie.pauseMotion(allowedKeys[e.keyCode]);
+	});
+	bkgdImgs.forEach(function(img) {
+		img.pauseMotion(allowedKeys[e.keyCode]);
+	});
+});
 
