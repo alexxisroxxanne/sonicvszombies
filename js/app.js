@@ -57,6 +57,8 @@ var Sonic = function() {
 	this.jumpSpeed = 20;
 	// initialize sonic as alive
 	// this.alive === false;
+
+	this.ready = false;
 };
 
 /*
@@ -84,6 +86,7 @@ Sonic.prototype.render = function() {
 Sonic.prototype.handleInput = function(key) {
 	if (key === "space" || key === "enter")
 		sonicSprite.jump(key);
+	this.ready = true;
 };
 
 Sonic.prototype.increaseScore = function() {
@@ -117,9 +120,22 @@ Sonic.prototype.loseLife = function() {
 	// decrease life count
 	this.lives--;
 
-	// game over when no more lives
-	//if (this.lives === 0)
-		//reset();
+	if (this.lives === 0) {
+		zombies.forEach(function(zombie) {
+			zombie.setSpawnLocation();
+			zombie.speed = 0;
+		});
+		nyancats.forEach(function(cat) {
+			cat.setSpawnLocation();
+			cat.speed = 0;
+		});
+		bkgdImgs.forEach(function(img) {
+			img.speed = 0;
+		});
+		//ctx.globalCompositionOperation="source-over";
+		//ctx.strokeText("Press up arrow to play again", 300, 100);
+
+	}
 };
 
 
@@ -515,12 +531,16 @@ NyanCat.prototype.pauseMotion = function(key) {
 		this.setSpeed();
 };
 Zombie.prototype.pauseMotion = function(key) {
-	if (key === "p")
+	if (key === "p" || sonic.lives <= 0)
 		this.speed = 0;
 	else if (key === "up" && this.speed == 0)
 		this.setSpeed();
 };
-
+Sonic.prototype.pauseMotion = function(key) {
+	if (key === "up" && this.lives <= 0) {
+		this.lives = 3;
+	}
+}
 	
 // Listen for key presses and send input to handleInput()
 document.addEventListener("keydown", function(e) {
@@ -547,5 +567,6 @@ document.addEventListener("keyup", function(e) {
 	bkgdImgs.forEach(function(img) {
 		img.pauseMotion(allowedKeys[e.keyCode]);
 	});
+	sonic.pauseMotion(allowedKeys[e.keyCode]);
 });
 

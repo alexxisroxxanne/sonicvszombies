@@ -117,10 +117,17 @@ var Engine = (function(global) {
 			}
 		}
 
-		if (sonic.lives > 0)
+		//ctx.strokeText("press enter to start", 300, 200);
+		if (sonic.lives > 0 && sonic.ready == true)
 			renderEntities();
 		else {
-			reset();
+			ctx.font = "30px monospace";
+			ctx.textAlign = "center";
+			ctx.fillStyle = "palevioletred";
+			if (sonic.ready = true)
+				ctx.fillText("Press up arrow twice to play again", canvas.width/2, 200);
+			else if (sonic.ready = false)
+				ctx.fillText("Press enter to start");
 		}
 	}
 
@@ -174,7 +181,8 @@ var Engine = (function(global) {
 		"images/sun1.png",
 		"images/cactus.png",
 		"images/cloud.png",
-		"images/rocks.png"
+		"images/rocks.png",
+		"images/play-button.png"
 	]);
 	Resources.onReady(init);
 
