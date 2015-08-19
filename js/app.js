@@ -16,25 +16,14 @@
 
 "use strict";
 
-/*
-	gameBegin function starts the game
-	Parameter - key, user's keyboard input
-
-function gameBegin(key) {
-	ctx.strokeText("Press enter to begin", 0, ctx.height/2);
-
-	if (key === "enter")
-		return true;
-	else
-		return false;
-}
-*/
 
 // canvas bounds
 var rightBound = 760,
 	leftBound = 0;
 // first level
 var level = 1;
+
+
 
 /*
 	Sonic class creates the player's character, Sonic the Hedgehog
@@ -66,9 +55,8 @@ var Sonic = function() {
 	Parameter - dt, the time delta between loops
 */
 Sonic.prototype.update = function(dt) {
-	// use sprites update method
+	// use sprite's update method
 	sonicSprite.update();
-	// this.handleInput(key);
 };
 
 /*
@@ -115,7 +103,8 @@ Sonic.prototype.loseLife = function() {
 
 	if (this.score > 100) {
 		this.score = this.score - scoreDiv;
-	}
+	} else
+		this.score = 0;
 
 	// decrease life count
 	this.lives--;
@@ -132,9 +121,6 @@ Sonic.prototype.loseLife = function() {
 		bkgdImgs.forEach(function(img) {
 			img.speed = 0;
 		});
-		//ctx.globalCompositionOperation="source-over";
-		//ctx.strokeText("Press up arrow to play again", 300, 100);
-
 	}
 };
 
@@ -159,12 +145,6 @@ var NyanCat = function() {
 	this.setSpeed();
 
 	this.maxNumber = 1 + level;
-
-	// for collision detection
-	/*
-	var yDiffCat,
-		xDiffCat;
-		*/
 
 	console.log("im a cat");
 };
@@ -491,7 +471,6 @@ var zombies = [];
 var zombie = new Zombie();
 zombies.push(zombie);
 console.log(zombies.length);
-console.log(zombie.location);
 
 
 // create new instance of sonic

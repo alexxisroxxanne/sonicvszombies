@@ -181,8 +181,8 @@ var Engine = (function(global) {
 		"images/sun1.png",
 		"images/cactus.png",
 		"images/cloud.png",
-		"images/rocks.png",
-		"images/play-button.png"
+		"images/rocks.png"
+		//"images/play-button.png"
 	]);
 	Resources.onReady(init);
 
