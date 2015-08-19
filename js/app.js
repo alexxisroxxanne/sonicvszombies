@@ -47,7 +47,7 @@ var Sonic = function() {
 	// initialize sonic as alive
 	// this.alive === false;
 
-	this.ready = false;
+	//this.ready = false;
 };
 
 /*
@@ -121,6 +121,15 @@ Sonic.prototype.loseLife = function() {
 		bkgdImgs.forEach(function(img) {
 			img.speed = 0;
 		});
+	}
+};
+
+/*
+	Reset life count when user presses up after game ends
+*/
+Sonic.prototype.restartGame = function(key) {
+	if (key === "up" && this.lives <= 0) {
+		this.lives = 3;
 	}
 };
 
@@ -243,6 +252,18 @@ NyanCat.prototype.setRandom2 = function() {
 
 NyanCat.prototype.levelReset = function() {
 	this.setSpawnLocation();
+};
+
+/*
+	Pause movement of nyancats if user presses p,
+	or restart movement if user presses up arrow
+	Param - key, the key the user presses
+*/
+NyanCat.prototype.pauseMotion = function(key) {
+	if (key === "p")
+		this.speed = 0;
+	else if (key === "up" && this.speed == 0)
+		this.setSpeed();
 };
 
 
@@ -388,6 +409,18 @@ Zombie.prototype.levelReset = function() {
 	this.setSpawnLocation();
 };
 
+/*
+	Pause movement of zombies if user presses p,
+	or restart movement if user presses up arrow
+	Param - key, the key the user presses
+*/
+Zombie.prototype.pauseMotion = function(key) {
+	if (key === "p" || sonic.lives <= 0)
+		this.speed = 0;
+	else if (key === "up" && this.speed == 0)
+		this.setSpeed();
+};
+
 
 
 /*
@@ -444,6 +477,30 @@ BkgdImages.prototype.boundsCheck = function() {
 	}
 };
 
+/*
+	Pause movement of background images if user presses p,
+	or restart movement if user presses up arrow
+	Param - key, the key the user presses
+*/
+BkgdImages.prototype.pauseMotion = function(key) {
+	if (key === "p") {
+		this.speed = 0;
+	}
+	if (key === "up" && this.speed == 0) {
+		var speed;
+		if (this.sprite == sunSprite)
+			speed = 0;
+		else if (this.sprite == cloudSprite)
+			speed = 0.5;
+		else if (this.sprite == cactusSprite || this.sprite == rockSprite)
+			speed = 1;
+
+		this.setSpeed();
+
+		this.speed = speed * this.speedMult;
+	}
+};
+
 
 
 // Place background images in array called bkgdImgs
@@ -485,41 +542,8 @@ function keepScore() {
     	levelString + livesString;
 }
 
-BkgdImages.prototype.pauseMotion = function(key) {
-	if (key === "p") {
-		this.speed = 0;
-	}
-	if (key === "up" && this.speed == 0) {
-		var speed;
-		if (this.sprite == sunSprite)
-			speed = 0;
-		else if (this.sprite == cloudSprite)
-			speed = 0.5;
-		else if (this.sprite == cactusSprite || this.sprite == rockSprite)
-			speed = 1;
 
-		this.setSpeed();
 
-		this.speed = speed * this.speedMult;
-	}
-};
-NyanCat.prototype.pauseMotion = function(key) {
-	if (key === "p")
-		this.speed = 0;
-	else if (key === "up" && this.speed == 0)
-		this.setSpeed();
-};
-Zombie.prototype.pauseMotion = function(key) {
-	if (key === "p" || sonic.lives <= 0)
-		this.speed = 0;
-	else if (key === "up" && this.speed == 0)
-		this.setSpeed();
-};
-Sonic.prototype.pauseMotion = function(key) {
-	if (key === "up" && this.lives <= 0) {
-		this.lives = 3;
-	}
-}
 	
 // Listen for key presses and send input to handleInput()
 document.addEventListener("keydown", function(e) {
@@ -546,6 +570,6 @@ document.addEventListener("keyup", function(e) {
 	bkgdImgs.forEach(function(img) {
 		img.pauseMotion(allowedKeys[e.keyCode]);
 	});
-	sonic.pauseMotion(allowedKeys[e.keyCode]);
+	sonic.restartGame(allowedKeys[e.keyCode]);
 });
 

@@ -118,16 +118,18 @@ var Engine = (function(global) {
 		}
 
 		//ctx.strokeText("press enter to start", 300, 200);
-		if (sonic.lives > 0 && sonic.ready == true)
+		if (sonic.lives > 0) //&& sonic.ready == true)
 			renderEntities();
 		else {
 			ctx.font = "30px monospace";
 			ctx.textAlign = "center";
 			ctx.fillStyle = "palevioletred";
-			if (sonic.ready = true)
-				ctx.fillText("Press up arrow twice to play again", canvas.width/2, 200);
-			else if (sonic.ready = false)
-				ctx.fillText("Press enter to start");
+			//if (sonic.ready = true)
+			var finalScore = "FINAL SCORE: " + sonic.score.toString();
+			ctx.fillText(finalScore, canvas.width/2, 130);
+			ctx.fillText("Press up arrow twice to play again", canvas.width/2, 200);
+			//else if (sonic.ready = false)
+			//	ctx.fillText("Press enter to start");
 		}
 	}
 
