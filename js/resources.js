@@ -10,7 +10,7 @@
 
 */
 
-"use strict";
+'use strict';
 
 (function() {
 	var resourceCache = {};

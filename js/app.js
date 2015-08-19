@@ -1,82 +1,80 @@
-/*
-	app.js
-	---------
-	Sonic vs. Zombies
-	-----------------
-	Alexxis Johnson - Aug. 9th, 2015
-	--------------------------------
-	App file adds functionality to the game and handles user input. It
-	defines and creates the player character (sonic), the obstacles
-	(zombies), the tokens (nyan cats), and the background images (cactus,
-	clouds, rocks, and sun) that create a "moving" background. It also
-	defines the keys that the user uses to play the game and updates the
-	score.
-*/
+/**
+ * app.js
+ * ---------
+ * Sonic vs. Zombies
+ * -----------------
+ * Alexxis Johnson - Aug. 9th, 2015
+ * --------------------------------
+ * App file adds functionality to the game and handles user input. It
+ * defines and creates the player character (sonic), the obstacles
+ * (zombies), the tokens (nyan cats), and the background images (cactus,
+ * clouds, rocks, and sun) that create a "moving" background. It also
+ * defines the keys that the user uses to play the game and updates the
+ * score.
+ */
 
 
-"use strict";
+'use strict';
 
 
-// canvas bounds
-const rightBound = 760,
-	  leftBound = 0;
-// first level
+// canvas bounds constants
+const rightBound = 760;
+const leftBound = 0;
+
+// first level set to 1
 let level = 1;
 
 
 
-/*
-	Sonic class creates the player's character, Sonic the Hedgehog
-*/
+/**
+ * Sonic class creates the player's character, Sonic the Hedgehog
+ */
 var Sonic = function() {
-	console.log("sonic is loaded");
+	console.log('sonic is loaded');
+
+	// set coordinates = to sprite coordinates
+	this.x = sonicSprite.x;
+	this.y = sonicSprite.y;
 
 	// set initial score to 0
 	this.score = 0;
 
 	// set initial life count to 3
 	this.lives = 3;
-
-	this.x = sonicSprite.x;
-	this.y = sonicSprite.y;
-
-	// set initial level to 1
-	// this.level = 1;
-
-	this.jumpSpeed = 20;
-	// initialize sonic as alive
-	// this.alive === false;
-
-	//this.ready = false;
 };
 
-/*
-	Update sonic's sprite to give the appearance of movement
-	Parameter - dt, the time delta between loops
-*/
+/**
+ * Update sonic's sprite to give the appearance of movement
+ * Parameter - dt, the time delta between loops
+ */
 Sonic.prototype.update = function(dt) {
 	// use sprite's update method
 	sonicSprite.update();
 };
 
-/*
-	Draw the player character on the screen in canvas' context
-*/
+/**
+ * Draw the player character on the screen in canvas' context
+ * using sprite's render method
+ */
 Sonic.prototype.render = function() {
-	// use sprites render method
 	sonicSprite.render();
 };
 
-/*
-	Respond to user input via keyboard
-	Parameter - key, the key pressed by the player
-*/
+/**
+ * handleInput responds to key presses to make sonic jump while playing
+ * Parameter - key, the key pressed by the player
+ */
 Sonic.prototype.handleInput = function(key) {
-	if (key === "space" || key === "enter")
+	// use sonicSprite jump method due to sprite sheet change during jump
+	if (key === 'space' || key === 'enter')
 		sonicSprite.jump(key);
 	this.ready = true;
 };
 
+/**
+ * Increase score by 10 points, and increase level by 1 if score
+ * is a multiple of 100; increase life count by 1 if level goes up
+ */
 Sonic.prototype.increaseScore = function() {
 	this.score += 10;
 
@@ -84,7 +82,7 @@ Sonic.prototype.increaseScore = function() {
 	var scoreDiv = this.score % 100;
 
 	// if score is above 0 and is a multiple of 100
-	if (this.score > 0 && scoreDiv == 0) {
+	if (this.score > 0 && scoreDiv === 0) {
 		// level up
 		level++;
 
@@ -94,13 +92,13 @@ Sonic.prototype.increaseScore = function() {
 	}
 };
 
-/*
-	Reset score and decrease lives if lost a life
-*/
+/**
+ * Reset score and decrease lives if lost a life;
+ * Handle entity movement if game is over
+ */
 Sonic.prototype.loseLife = function() {
-	// reset score
+	// reset score to nearest multiple of 100 below score
 	var scoreDiv = this.score % 100;
-
 	if (this.score >= 100) {
 		this.score = this.score - scoreDiv;
 	} else
@@ -109,6 +107,7 @@ Sonic.prototype.loseLife = function() {
 	// decrease life count
 	this.lives--;
 
+	// move entities off screen and stop movement if game is over
 	if (this.lives === 0) {
 		zombies.forEach(function(zombie) {
 			zombie.setSpawnLocation();
@@ -124,27 +123,25 @@ Sonic.prototype.loseLife = function() {
 	}
 };
 
-/*
-	Reset life count when user presses up after game ends
-*/
+/**
+ * Reset life count when user presses up key after game ends
+ * Param - key, the key the user presses
+ */
 Sonic.prototype.restartGame = function(key) {
-	if (key === "up" && this.lives <= 0) {
+	if (key === 'up' && this.lives <= 0) {
 		this.lives = 3;
 	}
 };
 
 
 
-/*
-	NyanCat class creates the nyan cat objects that sonic collects
-	to gain points
-	Parameters - 
-		x and y are initial coordinates of nyancats
-		speed is how fast game is moving
-*/
+/**
+ * NyanCat class creates the nyan cat objects that sonic collects
+ * to gain points
+ */
 var NyanCat = function() {
 	// set the nyancat image/sprite
-	this.sprite = "images/nyancat.png";
+	this.sprite = 'images/nyancat.png';
 
 	// set x and y coordinates
 	this.setSpawnLocation();
@@ -153,62 +150,63 @@ var NyanCat = function() {
 	// set cat speed
 	this.setSpeed();
 
+	// set maximum number of cats allowed per level
 	this.maxNumber = 1 + level;
 
-	console.log("im a cat");
+	console.log('im a cat');
 };
 
-/*
-	Update nyancat location/position
-	Parameters -
-		dt, time delta between loops
-		collisionCheck - function that returns true if sonic and cat
-		collide
-*/
+/**
+ * Update nyancat location/position
+ * Parameter - dt, time delta between loops
+ */
 NyanCat.prototype.update = function(dt) {
+	// move cat
 	this.x = this.x + this.speed * dt;
-
-	this.boundsCheck();
 
 	// if number of cats is less than max number of cats...
 	if (nyancats.length < this.maxNumber) {
 
 		// and if two random numbers equal each other
-		if (this.random1 == this.random2) {
+		if (this.random1 === this.random2) {
+
 			// spawn a new cat
 			nyancats.push(new NyanCat());
 
 		// otherwise...
 		} else {
+
 			// change first random number
 			this.setRandom1();
 		}
 	}
 
+	// call checking methods
+	this.boundsCheck();
 	this.collisionCheck();
 	this.checkLevelUp(level);
 	
 };
 
-/*
-	Draw NyanCat on the screen
-*/
+/**
+ * Draw NyanCat on the screen
+ */
 NyanCat.prototype.render = function() {
 	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-/*
-	Reset NyanCat if passes leftbounds
-*/
+/**
+ * Reset NyanCat if passes leftbounds
+ */
 NyanCat.prototype.boundsCheck = function() {
 	if (this.x <= leftBound) {
 		this.setSpawnLocation();
 	}
 };
 
-/*
-	Increase points if sonic and cat collide
-*/
+/**
+ * Increase points if sonic and cat collide
+ */
 NyanCat.prototype.collisionCheck = function() {
 	// find x and y coordinate differences between sprites
 	var yDiffCat = this.y - sonicSprite.y;
@@ -218,113 +216,114 @@ NyanCat.prototype.collisionCheck = function() {
 	if (yDiffCat > -15 && yDiffCat < 15) {
 		// and if x coordinates are within pixel range
 		if (xDiffCat > -30 && xDiffCat < 30) {
+			// increase score and reset cat offscreen
 			sonic.increaseScore();
 			this.setSpawnLocation();
 		}
 	}
 };
-/*
-	Set random spawn location out of right bounds
-*/
+
+/**
+ * Set random spawn location out of right bounds
+ */
 NyanCat.prototype.setSpawnLocation = function() {
 	this.x = Math.floor(Math.random() * (1250 - 750 + 1)) + 750;
 };
 
-/*
-	Set speed of cat based on sonic's level
-*/
+/**
+ * Set speed of cat based on sonic's level
+ */
 NyanCat.prototype.setSpeed = function() {
 	this.speed = - (130 + (10 * level));
 };
 
-/*
-	Set first random number - used for random spawn times
-*/
+/**
+ * Set first random number - used for random spawn times
+ */
 NyanCat.prototype.setRandom1 = function() {
 	this.random1 = Math.floor(Math.random() * (750 - 10 + 1)) + 10;
 };
 
-/*
-	Set second random number - used for random spawn times
-*/
+/**
+ * Set second random number - used for random spawn times
+ */
 NyanCat.prototype.setRandom2 = function() {
 	this.random2 = Math.floor(Math.random() * (750 - 10 + 1)) + 10;
 };
 
+/**
+ * Reset cat off screen
+ */
 NyanCat.prototype.levelReset = function() {
 	this.setSpawnLocation();
 };
 
-/*
-	Pause movement of nyancats if user presses p,
-	or restart movement if user presses up arrow
-	Param - key, the key the user presses
-*/
+/**
+ * Pause movement of nyancats if user presses p,
+ * or restart movement if user presses up arrow
+ * Param - key, the key the user presses
+ */
 NyanCat.prototype.pauseMotion = function(key) {
-	if (key === "p")
+	// p for pause, up for restart
+	if (key === 'p')
 		this.speed = 0;
-	else if (key === "up" && this.speed == 0)
+	else if (key === 'up' && this.speed === 0)
 		this.setSpeed();
 };
 
+/**
+ * Check if player has leveled up
+ */
 NyanCat.prototype.checkLevelUp = function(level) {
 	this.maxNumber = level + 1;
 };
 
 
 
-/*
-	Zombie class creates the zombie/obstacle objects that sonic must
-	avoid
-	Parameters -
-		x and y are initial zombie coordinates
-		speed is how fast game is moving
-*/
+/**
+ * Zombie class creates the zombie/obstacle objects that sonic must
+ * avoid
+ */
 var Zombie = function() {
 	// set zombie image/sprite
-	this.sprite = "images/zombie.png";
+	this.sprite = 'images/zombie.png';
 
 	// set zombie initial location and speed
-	this.setSpawnLocation(); // sets random x-coordinate off-screen
-	this.y = 250; // constant
+	this.setSpawnLocation();
+	this.y = 250;
 	this.setSpeed();
 
 	// max number of zombies
 	this.maxNumber = 2 + level;
 
-	// set random values to help with random spawn times
+	// set random values to create random spawn times
 	this.setRandom1();
 	this.setRandom2();
 
-	console.log("zombie loaded");
+	console.log('zombie loaded');
 };
 
-/*
-	Draw the zombie/obstacle on the screen using the canvas' context
-*/
+/**
+ * Draw the zombie/obstacle on the screen using the canvas' context
+ */
 Zombie.prototype.render = function() {
 	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-/*
-	Update zombie location/position
-	Parameters -
-		dt, time delta between loops
-		collisionCheck - function that returns true if sonic and zombie
-		collide
-*/
+/**
+ * Update zombie location/position
+ * Parameter - dt, time delta between loops
+ */
 Zombie.prototype.update = function(dt) {
-	// multiply movement by dt to ensure game runs at same speed across
-	// different browsers
+	// multiply movement by dt to run game at same speed across browsers
 	this.x = this.x + this.speed * dt;
 
-	// if number of zombies is less than max number of zombies...
-	// (and game isn't paused)
-
+	// if # of zombies < max # of zombies (and game isn't paused)
 	if (zombies.length < this.maxNumber && this.speed !== 0) {
-		//if (this.speed > 0) {
+
 			// and if two random numbers equal each other
-			if (this.random1 == this.random2) {
+			if (this.random1 === this.random2) {
+
 				// spawn a new zombie
 				zombies.push(new Zombie());
 
@@ -333,20 +332,18 @@ Zombie.prototype.update = function(dt) {
 				// change first random number
 				this.setRandom1();
 			}
-		//}
 	}
 	
-	// check if zombies are still in bounds
+	// call checking methods
 	this.boundsCheck();
-
 	this.collisionCheck();
 	this.checkLevelUp(level);
 };
 
-/*
-	Check for collisions between zombie and sonic
-	Return true if collide; false if have not collided
-*/
+/**
+ * Check for collisions between zombie and sonic
+ * Handle reseting level if zombie and sonic collide
+ */
 Zombie.prototype.collisionCheck = function() {
 	// find difference between x and y coordinates of both sprites
 	var yDiffZom = this.y - sonicSprite.y; // use sonicSprite for jumps
@@ -354,23 +351,27 @@ Zombie.prototype.collisionCheck = function() {
 
 	// if y coordinates are within pixel range
 	if (yDiffZom > -15 && yDiffZom < 15) {
+
 		// and if x coordinates are within pixel range
 		if (xDiffZom > -20 && xDiffZom < 20) {
+
 			sonic.loseLife();
-			// reset();
+			
 			zombies.forEach(function(zombie) {
 				zombie.levelReset();
 			});
+
 			nyancats.forEach(function(cat) {
 				cat.levelReset();
 			});
+
 		}
 	}
 };
 
-/*
-	Reset zombie to random location once zombie moves out of bounds
-*/
+/**
+ * Reset zombie to random location once zombie moves out of bounds
+ */
 Zombie.prototype.boundsCheck = function() {
 	
 	if (this.x <= leftBound) {
@@ -378,16 +379,16 @@ Zombie.prototype.boundsCheck = function() {
 	}
 };
 
-/*
-	Place zombie at random new x-coordinate
-*/
+/**
+ * Place zombie at random new x-coordinate
+ */
 Zombie.prototype.setSpawnLocation = function() {
 	this.x = Math.floor(Math.random() * (1250 - 750 + 1)) + 750;
 };
 
-/*
-	Set zombie speed
-*/
+/**
+ * Set zombie speed
+ */
 Zombie.prototype.setSpeed = function() {
 	// get a random number between 1 and 20
 	var randomMult = Math.floor(Math.random() * (20 - 1 + 1)) + 1;
@@ -397,36 +398,42 @@ Zombie.prototype.setSpeed = function() {
 	return this.speed;
 };
 
-/*
-	Set first random number - used for random spawn times
-*/
+/**
+ * Set first random number - used for random spawn times
+ */
 Zombie.prototype.setRandom1 = function() {
 	this.random1 = Math.floor(Math.random() * (750 - 10 + 1)) + 10;
 };
 
-/*
-	Set second random number - used for random spawn times
-*/
+/**
+ * Set second random number - used for random spawn times
+ */
 Zombie.prototype.setRandom2 = function() {
 	this.random2 = Math.floor(Math.random() * (750 - 10 + 1)) + 10;
 };
 
+/**
+ * 
+ */
 Zombie.prototype.levelReset = function() {
 	this.setSpawnLocation();
 };
 
-/*
-	Pause movement of zombies if user presses p,
-	or restart movement if user presses up arrow
-	Param - key, the key the user presses
-*/
+/**
+ * Pause movement of zombies if user presses p,
+ * or restart movement if user presses up arrow
+ * Param - key, the key the user presses
+ */
 Zombie.prototype.pauseMotion = function(key) {
-	if (key === "p" || sonic.lives <= 0)
+	if (key === 'p' || sonic.lives <= 0)
 		this.speed = 0;
-	else if (key === "up" && this.speed == 0)
+	else if (key === 'up' && this.speed === 0)
 		this.setSpeed();
 };
 
+/**
+ * Update max number of zombies based on player level
+ */
 Zombie.prototype.checkLevelUp = function(level) {
 	this.maxNumber = level + 1;
 };
@@ -450,7 +457,7 @@ var BkgdImages = function(x, y, img, speed) {
 	this.setSpeed();
 	this.speed = speed * this.speedMult;
 
-	console.log("bkdg image");
+	console.log('bkdg image');
 };
 
 /*
@@ -493,16 +500,16 @@ BkgdImages.prototype.boundsCheck = function() {
 	Param - key, the key the user presses
 */
 BkgdImages.prototype.pauseMotion = function(key) {
-	if (key === "p") {
+	if (key === 'p') {
 		this.speed = 0;
 	}
-	if (key === "up" && this.speed == 0) {
+	if (key === 'up' && this.speed === 0) {
 		var speed;
-		if (this.sprite == sunSprite)
+		if (this.sprite === sunSprite)
 			speed = 0;
-		else if (this.sprite == cloudSprite)
+		else if (this.sprite === cloudSprite)
 			speed = 0.5;
-		else if (this.sprite == cactusSprite || this.sprite == rockSprite)
+		else if (this.sprite === cactusSprite || this.sprite === rockSprite)
 			speed = 1;
 
 		this.setSpeed();
@@ -515,10 +522,10 @@ BkgdImages.prototype.pauseMotion = function(key) {
 
 // Place background images in array called bkgdImgs
 var bkgdImgs = [];
-var cactusSprite = "images/cactus.png",
-	rockSprite = "images/rocks.png",
-	cloudSprite = "images/cloud.png",
-	sunSprite = "images/sun1.png";
+var cactusSprite = 'images/cactus.png',
+	rockSprite = 'images/rocks.png',
+	cloudSprite = 'images/cloud.png',
+	sunSprite = 'images/sun1.png';
 var sunImg = new BkgdImages(570, 10, sunSprite, 0);
 bkgdImgs.push(sunImg);
 var cloudImg = new BkgdImages(380, 50, cloudSprite, 0.5);
@@ -542,34 +549,34 @@ console.log(zombies.length);
 
 // create new instance of sonic
 var sonic = new Sonic();
-console.log("sonic is instantiated");
+console.log('sonic is instantiated');
 
 
 
 // display player info
 function keepScore() {
-	var scoreString = "Score: " + sonic.score.toString();
-	var levelString = " | Level: " + level.toString();
-	var livesString = " | Lives: " + sonic.lives.toString();
-    document.querySelector("#score").innerHTML = scoreString +
+	var scoreString = 'Score: ' + sonic.score.toString();
+	var levelString = ' | Level: ' + level.toString();
+	var livesString = ' | Lives: ' + sonic.lives.toString();
+    document.querySelector('#score').innerHTML = scoreString +
     	levelString + livesString;
 }
 
 	
 // Listen for key presses and send input to handleInput()
-document.addEventListener("keydown", function(e) {
+document.addEventListener('keydown', function(e) {
 	var allowedKeys = {
-		13: "enter",
-		32: "space"
+		13: 'enter',
+		32: 'space',
 	};
 	sonic.handleInput(allowedKeys[e.keyCode]);
 });
 
 // Listen for pause and un-pause for moving elements
-document.addEventListener("keyup", function(e) {
+document.addEventListener('keyup', function(e) {
 	var allowedKeys = {
-		80: "p",
-		38: "up"
+		80: 'p',
+		38: 'up',
 	};
 
 	nyancats.forEach(function(cat) {
@@ -583,4 +590,3 @@ document.addEventListener("keyup", function(e) {
 	});
 	sonic.restartGame(allowedKeys[e.keyCode]);
 });
-

@@ -99,7 +99,7 @@ var Sprites = (function(global) {
 
 		// toggle jumping state when key is pressed
 		obj.jump = function(key) {
-			if (key === "space" || key === "enter") {
+			if (key === 'space' || key === 'enter') {
 				obj.jumping = 2;
 
 				setTimeout(function() {
@@ -107,7 +107,7 @@ var Sprites = (function(global) {
 				}, 800);
 			}
 			
-			console.log("jumping");
+			console.log('jumping');
 		};
 		
 		return obj;
@@ -124,13 +124,13 @@ var Sprites = (function(global) {
 		height: 117,
 		image: sonicSpriteImg,
 		numberOfFrames: 4,
-		ticksPerFrame: 6
+		ticksPerFrame: 6,
 	});
 	
 	// start game loop as soon as sprite sheet is loaded
-	sonicSpriteImg.addEventListener("load", gameLoop);
-	sonicSpriteImg.src = "images/sonicrunningsheet.png";
-	jumpingSpriteImg.src = "images/sonicjumping.png";
-	console.log("Sprites file is opened");
+	sonicSpriteImg.addEventListener('load', gameLoop);
+	sonicSpriteImg.src = 'images/sonicrunningsheet.png';
+	jumpingSpriteImg.src = 'images/sonicjumping.png';
+	console.log('Sprites file is opened');
 
 }());

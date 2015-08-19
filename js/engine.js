@@ -14,7 +14,7 @@
 	to these objects.
 */
 
-"use strict";
+'use strict';
 
 var Engine = (function(global) {
 	/*
@@ -100,9 +100,9 @@ var Engine = (function(global) {
 	function render() {
 		// create array of background images
 		var bkgdRowImgs = [
-			"images/sky2.png", // top row is second level of sky
-			"images/sky1.png", // first level of sky
-			"images/sand1.png"]; // top level of sand
+			'images/sky2.png', // top row is second level of sky
+			'images/sky1.png', // first level of sky
+			'images/sand1.png']; // top level of sand
 		var numRows = 3,
 			numCols = 5,
 			row, col;
@@ -117,19 +117,15 @@ var Engine = (function(global) {
 			}
 		}
 
-		//ctx.strokeText("press enter to start", 300, 200);
-		if (sonic.lives > 0) //&& sonic.ready == true)
+		if (sonic.lives > 0)
 			renderEntities();
 		else {
-			ctx.font = "30px monospace";
-			ctx.textAlign = "center";
-			ctx.fillStyle = "palevioletred";
-			//if (sonic.ready = true)
-			var finalScore = "FINAL SCORE: " + sonic.score.toString();
+			ctx.font = '30px monospace';
+			ctx.textAlign = 'center';
+			ctx.fillStyle = 'palevioletred';
+			var finalScore = 'FINAL SCORE: ' + sonic.score.toString();
 			ctx.fillText(finalScore, canvas.width/2, 130);
-			ctx.fillText("Press up arrow twice to play again", canvas.width/2, 200);
-			//else if (sonic.ready = false)
-			//	ctx.fillText("Press enter to start");
+			ctx.fillText('Press up arrow twice to play again', canvas.width/2, 200);
 		}
 	}
 
@@ -171,20 +167,19 @@ var Engine = (function(global) {
 		loaded
 	*/
 	Resources.load([
-		"images/sky2.png",
-		"images/sky1.png",
-		"images/sand1.png",
-		"images/sonicrunningsheet.png",
-		"images/sonicstill.png",
-		"images/sonicsprites.png",
-		"images/sonicjumping.png",
-		"images/nyancat.png",
-		"images/zombie.png",
-		"images/sun1.png",
-		"images/cactus.png",
-		"images/cloud.png",
-		"images/rocks.png"
-		//"images/play-button.png"
+		'images/sky2.png',
+		'images/sky1.png',
+		'images/sand1.png',
+		'images/sonicrunningsheet.png',
+		'images/sonicstill.png',
+		'images/sonicsprites.png',
+		'images/sonicjumping.png',
+		'images/nyancat.png',
+		'images/zombie.png',
+		'images/sun1.png',
+		'images/cactus.png',
+		'images/cloud.png',
+		'images/rocks.png',
 	]);
 	Resources.onReady(init);
 
