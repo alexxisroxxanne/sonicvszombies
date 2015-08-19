@@ -186,6 +186,7 @@ NyanCat.prototype.update = function(dt) {
 	}
 
 	this.collisionCheck();
+	this.checkLevelUp(level);
 	
 };
 
@@ -266,6 +267,10 @@ NyanCat.prototype.pauseMotion = function(key) {
 		this.setSpeed();
 };
 
+NyanCat.prototype.checkLevelUp = function(level) {
+	this.maxNumber = level + 1;
+};
+
 
 
 /*
@@ -335,6 +340,7 @@ Zombie.prototype.update = function(dt) {
 	this.boundsCheck();
 
 	this.collisionCheck();
+	this.checkLevelUp(level);
 };
 
 /*
@@ -419,6 +425,10 @@ Zombie.prototype.pauseMotion = function(key) {
 		this.speed = 0;
 	else if (key === "up" && this.speed == 0)
 		this.setSpeed();
+};
+
+Zombie.prototype.checkLevelUp = function(level) {
+	this.maxNumber = level + 1;
 };
 
 
