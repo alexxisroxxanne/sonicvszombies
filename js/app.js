@@ -101,7 +101,7 @@ Sonic.prototype.loseLife = function() {
 	// reset score
 	var scoreDiv = this.score % 100;
 
-	if (this.score > 100) {
+	if (this.score >= 100) {
 		this.score = this.score - scoreDiv;
 	} else
 		this.score = 0;
@@ -148,7 +148,7 @@ var NyanCat = function() {
 
 	// set x and y coordinates
 	this.setSpawnLocation();
-	this.y = 50;
+	this.y = 250;
 
 	// set cat speed
 	this.setSpeed();
@@ -233,7 +233,7 @@ NyanCat.prototype.setSpawnLocation = function() {
 	Set speed of cat based on sonic's level
 */
 NyanCat.prototype.setSpeed = function() {
-	this.speed = - (100 + (10 * level));
+	this.speed = - (130 + (10 * level));
 };
 
 /*
@@ -387,7 +387,7 @@ Zombie.prototype.setSpeed = function() {
 	var randomMult = Math.floor(Math.random() * (20 - 1 + 1)) + 1;
 
 	// set random speed, with min being 41
-	this.speed = - (200 + randomMult + (10 * level));
+	this.speed = - (150 + randomMult + (10 * level));
 	return this.speed;
 };
 
