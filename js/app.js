@@ -316,7 +316,7 @@ Zombie.prototype.update = function(dt) {
 	// if number of zombies is less than max number of zombies...
 	// (and game isn't paused)
 
-	if (zombies.length < this.maxNumber) {
+	if (zombies.length < this.maxNumber && this.speed !== 0) {
 		//if (this.speed > 0) {
 			// and if two random numbers equal each other
 			if (this.random1 == this.random2) {
@@ -534,6 +534,9 @@ console.log(zombies.length);
 var sonic = new Sonic();
 console.log("sonic is instantiated");
 
+
+
+// display player info
 function keepScore() {
 	var scoreString = "Score: " + sonic.score.toString();
 	var levelString = " | Level: " + level.toString();
@@ -541,8 +544,6 @@ function keepScore() {
     document.querySelector("#score").innerHTML = scoreString +
     	levelString + livesString;
 }
-
-
 
 	
 // Listen for key presses and send input to handleInput()
