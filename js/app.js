@@ -18,10 +18,10 @@
 
 
 // canvas bounds
-var rightBound = 760,
-	leftBound = 0;
+const rightBound = 760,
+	  leftBound = 0;
 // first level
-var level = 1;
+let level = 1;
 
 
 
