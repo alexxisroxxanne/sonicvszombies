@@ -548,9 +548,16 @@ var sonic = new Sonic();
 
 // Display player info above canvas
 function keepScore() {
+	// FIXME: zombies should not continue spawning if game over
+	var lifeDisplay;
+	if (sonic.lives < 0) {
+		lifeDisplay = "0";
+	} else {
+		lifeDisplay = sonic.lives.toString();
+	}
 	var scoreString = 'Score: ' + sonic.score.toString();
 	var levelString = ' | Level: ' + level.toString();
-	var livesString = ' | Lives: ' + sonic.lives.toString();
+	var livesString = ' | Lives: ' + lifeDisplay;
     document.querySelector('#score').innerHTML = scoreString +
     	levelString + livesString;
 }
