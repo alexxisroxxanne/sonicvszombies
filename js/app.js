@@ -78,15 +78,11 @@ Sonic.prototype.handleInput = function(key) {
 Sonic.prototype.increaseScore = function() {
 	this.score += 10;
 
-	// for increasing level
+	// scoreDiv is for increasing level
 	var scoreDiv = this.score % 100;
 
-	// if score is above 0 and is a multiple of 100
 	if (this.score > 0 && scoreDiv === 0) {
-		// level up
 		level++;
-
-		// increase lives by 1 if under max
 		if (this.lives < 3)
 			this.lives++;
 	}
@@ -161,7 +157,7 @@ var NyanCat = function() {
  * Parameter - dt, time delta between loops
  */
 NyanCat.prototype.update = function(dt) {
-	// move cat
+	// move cat, using dt to render at same speed across browsers
 	this.x = this.x + this.speed * dt;
 
 	// if number of cats is less than max number of cats...
@@ -256,6 +252,7 @@ NyanCat.prototype.setRandom2 = function() {
  */
 NyanCat.prototype.levelReset = function() {
 	this.setSpawnLocation();
+	this.setSpeed();
 };
 
 /**
@@ -304,13 +301,6 @@ var Zombie = function() {
 };
 
 /**
- * Draw the zombie/obstacle on the screen using the canvas' context
- */
-Zombie.prototype.render = function() {
-	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
-/**
  * Update zombie location/position
  * Parameter - dt, time delta between loops
  */
@@ -341,12 +331,28 @@ Zombie.prototype.update = function(dt) {
 };
 
 /**
+ * Draw the zombie/obstacle on the screen using the canvas' context
+ */
+Zombie.prototype.render = function() {
+	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+/**
+ * Reset zombie to random location once zombie moves out of bounds
+ */
+Zombie.prototype.boundsCheck = function() {
+	if (this.x <= leftBound) {
+		this.setSpawnLocation();
+	}
+};
+
+/**
  * Check for collisions between zombie and sonic
  * Handle reseting level if zombie and sonic collide
  */
 Zombie.prototype.collisionCheck = function() {
-	// find difference between x and y coordinates of both sprites
-	var yDiffZom = this.y - sonicSprite.y; // use sonicSprite for jumps
+	// find coordinate diff b/t sprites; use sonicSprite for jumps
+	var yDiffZom = this.y - sonicSprite.y;
 	var xDiffZom = this.x - sonic.x;
 
 	// if y coordinates are within pixel range
@@ -366,16 +372,6 @@ Zombie.prototype.collisionCheck = function() {
 			});
 
 		}
-	}
-};
-
-/**
- * Reset zombie to random location once zombie moves out of bounds
- */
-Zombie.prototype.boundsCheck = function() {
-	
-	if (this.x <= leftBound) {
-		this.setSpawnLocation();
 	}
 };
 
@@ -413,10 +409,11 @@ Zombie.prototype.setRandom2 = function() {
 };
 
 /**
- * 
+ * Reset zombie off screen and reset speed
  */
 Zombie.prototype.levelReset = function() {
 	this.setSpawnLocation();
+	this.setSpeed();
 };
 
 /**
@@ -440,71 +437,75 @@ Zombie.prototype.checkLevelUp = function(level) {
 
 
 
-/*
-	BkgdImages class creates the background images that create
-	the illusion of movement through the desert.
-	Parameters - 
-		x and y are initial coordinates of image
-		img is the specific background image
-		speed is how fast game is moving
-*/
+/**
+ * BkgdImages class creates the background images that create
+ * the illusion of movement through the desert.
+ * Parameters - 
+ *   x and y are initial coordinates of image
+ *   img is the specific background image
+ *   speed is how fast image is moving
+ */
 var BkgdImages = function(x, y, img, speed) {
 	this.x = x;
 	this.y = y;
 
 	this.sprite = img;
 
+	// speedMult and setSpeed used to create different speeds for images
 	this.setSpeed();
 	this.speed = speed * this.speedMult;
 
 	console.log('bkdg image');
 };
 
-/*
-	Update position of background images to give the appearance
-	of moving through the desert
-	Parameter - dt, time delta between loops
-*/
+/**
+ * Update position of background images to give the appearance
+ * of moving through the desert
+ * Parameter - dt, time delta between loops
+ */
 BkgdImages.prototype.update = function(dt) {
 	this.x = this.x + this.speed * dt;
 
+	// reset if out of bounds
 	this.boundsCheck();
 };
 
-/*
-	Draw background images on the screen
-*/
+/**
+ * Draw background images on the screen
+ */
 BkgdImages.prototype.render = function() {
 	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-/*
-	Set speed of background images so sonic appears to be moving
-*/
-BkgdImages.prototype.setSpeed = function() {
-	this.speedMult = - (20 + (10 * level));
-};
-
-/*
-	Reset bkgd images if they pass left bounds
-*/
+/**
+ * Reset bkgd images if they pass left bounds
+ */
 BkgdImages.prototype.boundsCheck = function() {
 	if (this.x <= leftBound) {
 		this.x = 760;
 	}
 };
 
-/*
-	Pause movement of background images if user presses p,
-	or restart movement if user presses up arrow
-	Param - key, the key the user presses
-*/
+/**
+ * Set speed of background images so sonic appears to be moving
+ * speedMult var is used to multiply speed based on image param
+ */
+BkgdImages.prototype.setSpeed = function() {
+	this.speedMult = - (20 + (10 * level));
+};
+
+/**
+ * Pause movement of background images if user presses p,
+ * or restart movement if user presses up arrow
+ * Param - key, the key the user presses
+ */
 BkgdImages.prototype.pauseMotion = function(key) {
 	if (key === 'p') {
 		this.speed = 0;
 	}
 	if (key === 'up' && this.speed === 0) {
 		var speed;
+		// vary speed resets based on sprite image
 		if (this.sprite === sunSprite)
 			speed = 0;
 		else if (this.sprite === cloudSprite)
@@ -523,9 +524,9 @@ BkgdImages.prototype.pauseMotion = function(key) {
 // Place background images in array called bkgdImgs
 var bkgdImgs = [];
 var cactusSprite = 'images/cactus.png',
-	rockSprite = 'images/rocks.png',
-	cloudSprite = 'images/cloud.png',
-	sunSprite = 'images/sun1.png';
+		rockSprite = 'images/rocks.png',
+		cloudSprite = 'images/cloud.png',
+		sunSprite = 'images/sun1.png';
 var sunImg = new BkgdImages(570, 10, sunSprite, 0);
 bkgdImgs.push(sunImg);
 var cloudImg = new BkgdImages(380, 50, cloudSprite, 0.5);
@@ -553,7 +554,7 @@ console.log('sonic is instantiated');
 
 
 
-// display player info
+// Display player info above canvas
 function keepScore() {
 	var scoreString = 'Score: ' + sonic.score.toString();
 	var levelString = ' | Level: ' + level.toString();
@@ -561,7 +562,6 @@ function keepScore() {
     document.querySelector('#score').innerHTML = scoreString +
     	levelString + livesString;
 }
-
 	
 // Listen for key presses and send input to handleInput()
 document.addEventListener('keydown', function(e) {
