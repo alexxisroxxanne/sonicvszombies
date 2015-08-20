@@ -3,7 +3,7 @@
  * ---------
  * Sonic vs. Zombies
  * -----------------
- * Alexxis Johnson - Aug. 9th, 2015
+ * Alexxis Johnson - Aug. 19th, 2015
  * --------------------------------
  * App file adds functionality to the game and handles user input. It
  * defines and creates the player character (sonic), the obstacles

@@ -1,13 +1,22 @@
-// "use strict";
+/**
+ * sprites.js
+ * ----------
+ * Alexxis Johnson - August 19th, 2015
+ * -----------------------------------
+ * Sprites file and class handles the player's sprite animation. It
+ * It takes a sprite sheet and renders each frame to give the illusion
+ * that the sprite is moving.
+ */
 
+
+// vars for sprites, defined globally for easier access across files
 var sonicSprite,
 	sonicSpriteImg;
-
 var jumpingSprite,
 	jumpingSpriteImg;
 
-var Sprites = (function(global) {
 
+var Sprites = (function(global) {
 	// update and render sprite at same speed as browser redraws
 	function gameLoop() {
 		window.requestAnimationFrame(gameLoop);
@@ -16,6 +25,13 @@ var Sprites = (function(global) {
 		sonicSprite.render();
 	}
 
+	/**
+	 * sprite function creates the sprite object
+	 * also has internal functions, such as update and render, that
+	 * draw the sprite on the screen and animate it
+	 * param - options, the object passed in that defines the sprite's
+	 * 	properties, such as height and width
+   */
 	function sprite(options) {
 
 		var obj = {},
@@ -53,16 +69,18 @@ var Sprites = (function(global) {
 				}
 			}
 		};
-
+		
 		obj.render = function() {
 			// render different sprites if player is jumping or not
 			switch(obj.jumping) {
 				case 1:
+					// player is not jumping
 					obj.y = 250;
 					obj.image = sonicSpriteImg;
 					obj.numberOfFrames = 4;
 				break;
 				case 2:
+					// player is mid-jump
 					obj.image = jumpingSpriteImg;
 					obj.numberOfFrames = 9;
 					if (obj.y > 50)
@@ -71,6 +89,7 @@ var Sprites = (function(global) {
 						obj.y = 50;
 				break;
 				case 3:
+					// player is descending from jump
 					if (obj.y < 250) {
 						obj.y += 10;
 						obj.image = jumpingSpriteImg;
@@ -84,7 +103,7 @@ var Sprites = (function(global) {
 				break;
 			}
 
-			// draw animation
+			// draw animation on canvas
 			obj.context.drawImage(
 				obj.image,
 				frameIndex * obj.width / numberOfFrames,
@@ -102,6 +121,10 @@ var Sprites = (function(global) {
 			if (key === 'space' || key === 'enter') {
 				obj.jumping = 2;
 
+				/**
+				 * FIXME: figure out how to keep jump animation from spazzing
+				 * 	when player holds down jumping keys
+				 */
 				setTimeout(function() {
 					obj.jumping = 3;
 				}, 800);
@@ -113,9 +136,9 @@ var Sprites = (function(global) {
 		return obj;
 	}
 
-
+	// set img vars to images
 	sonicSpriteImg = new Image();
-	jumpingSpriteImg = new Image(); // sprite for jumping
+	jumpingSpriteImg = new Image();
 
 	// create sonicSprite
 	sonicSprite = sprite({
