@@ -25,6 +25,7 @@ const leftBound = 0;
 let level = 1;
 
 
+// TODO: create super and subclasses for code reuse
 
 /**
  * Sonic class creates the player's character, Sonic the Hedgehog
