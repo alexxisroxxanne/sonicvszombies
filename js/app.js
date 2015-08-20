@@ -30,8 +30,6 @@ let level = 1;
  * Sonic class creates the player's character, Sonic the Hedgehog
  */
 var Sonic = function() {
-	console.log('sonic is loaded');
-
 	// set coordinates = to sprite coordinates
 	this.x = sonicSprite.x;
 	this.y = sonicSprite.y;
@@ -44,11 +42,11 @@ var Sonic = function() {
 };
 
 /**
- * Update sonic's sprite to give the appearance of movement
+ * Update sonic's sprite to give the appearance of movement, using
+ * sprite's update method
  * Parameter - dt, the time delta between loops
  */
 Sonic.prototype.update = function(dt) {
-	// use sprite's update method
 	sonicSprite.update();
 };
 
@@ -149,7 +147,6 @@ var NyanCat = function() {
 	// set maximum number of cats allowed per level
 	this.maxNumber = 1 + level;
 
-	console.log('im a cat');
 };
 
 /**
@@ -297,7 +294,6 @@ var Zombie = function() {
 	this.setRandom1();
 	this.setRandom2();
 
-	console.log('zombie loaded');
 };
 
 /**
@@ -455,7 +451,6 @@ var BkgdImages = function(x, y, img, speed) {
 	this.setSpeed();
 	this.speed = speed * this.speedMult;
 
-	console.log('bkdg image');
 };
 
 /**
@@ -545,13 +540,9 @@ nyancats.push(cat);
 var zombies = [];
 var zombie = new Zombie();
 zombies.push(zombie);
-console.log(zombies.length);
-
 
 // create new instance of sonic
 var sonic = new Sonic();
-console.log('sonic is instantiated');
-
 
 
 // Display player info above canvas

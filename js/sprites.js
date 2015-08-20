@@ -154,6 +154,5 @@ var Sprites = (function(global) {
 	sonicSpriteImg.addEventListener('load', gameLoop);
 	sonicSpriteImg.src = 'images/sonicrunningsheet.png';
 	jumpingSpriteImg.src = 'images/sonicjumping.png';
-	console.log('Sprites file is opened');
 
 }());
