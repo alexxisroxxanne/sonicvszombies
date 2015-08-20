@@ -18,11 +18,11 @@
 
 
 // canvas bounds constants
-const rightBound = 760;
-const leftBound = 0;
+var rightBound = 760,
+	 leftBound = 0;
 
 // first level set to 1
-let level = 1;
+var level = 1;
 
 
 // TODO: create super and subclasses for code reuse
